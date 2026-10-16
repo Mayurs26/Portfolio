@@ -383,18 +383,16 @@ export default function ProjectGrid() {
           ))}
         </div>
 
-        {/* Divider with label */}
+        {/* Category Subheading (No horizontal divider lines) */}
         <motion.div
           initial={prefersReducedMotion ? {} : { opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="flex items-center gap-4 my-12"
+          className="flex items-center justify-center my-12"
         >
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-          <span className="font-[family-name:var(--font-jetbrains)] text-[10px] tracking-[0.25em] uppercase text-[#22D3EE]/70 font-semibold">
+          <span className="font-[family-name:var(--font-jetbrains)] text-[11px] tracking-[0.25em] uppercase text-[#22D3EE]/80 font-semibold px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-sm">
             Utility &amp; Experimental Apps
           </span>
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         </motion.div>
 
         {/* Secondary grid */}

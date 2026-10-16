@@ -165,7 +165,7 @@ function CategoryRow({ category, skillList, isLast, reduced }: CategoryRowProps)
       transition={{ duration: DURATION.slow, ease: EASE }}
       className={[
         'flex flex-col sm:flex-row items-start gap-4 sm:gap-6 py-6',
-        isLast ? '' : 'border-b border-white/10',
+        isLast ? '' : 'border-b border-white/[0.04]',
       ].join(' ')}
     >
       {/* Left: glowing dot + label */}

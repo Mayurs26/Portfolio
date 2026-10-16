@@ -198,7 +198,7 @@ export default function About() {
       <div className="relative w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12 lg:py-4 xl:py-6 lg:h-[calc(100svh-72px)] lg:min-h-[600px] lg:max-h-[960px] flex flex-col justify-between z-10">
         
         {/* ── TOP SECTION HEADER / PILL BADGE ── */}
-        <div className="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-white/[0.08] shrink-0">
+        <div className="flex items-center justify-between pb-2.5 sm:pb-3 shrink-0">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#00F0FF] shadow-[0_0_10px_#00F0FF]" />
             <span className="font-[family-name:var(--font-jetbrains)] text-[10.5px] sm:text-xs font-bold tracking-[0.22em] uppercase text-white/90">
@@ -456,7 +456,7 @@ export default function About() {
         {/* ══════════════════════════════════════════════════════════════
             BOTTOM STRIP: KEY HIGHLIGHTS & STATS (MATCHING SHOWCASE)
            ══════════════════════════════════════════════════════════════ */}
-        <div className="shrink-0 pt-2.5 sm:pt-3 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-3 sm:gap-4">
+        <div className="shrink-0 pt-2.5 sm:pt-3 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
           
           {/* Left: Summary text */}
           <div className="flex items-center gap-2">

@@ -437,7 +437,7 @@ export default function PhoneShowcase() {
       <div className="relative w-full max-w-[1480px] mx-auto px-4 sm:px-8 lg:px-12 py-5 sm:py-6 lg:py-8 lg:h-[calc(100svh-72px)] min-h-[660px] flex flex-col justify-between z-10">
         
         {/* ── TOP HEADER BAR: PROJECT CONTROLS ── */}
-        <div className="flex items-center justify-between gap-4 shrink-0 pb-2 sm:pb-3 border-b border-white/[0.07]">
+        <div className="flex items-center justify-between gap-4 shrink-0 pb-2 sm:pb-3">
           {/* Left: • FEATURED PROJECTS */}
           <div className="flex items-center gap-2.5">
             <span className="w-2 h-2 rounded-full bg-[#00F0FF] shadow-[0_0_10px_#00F0FF]" />
@@ -799,7 +799,7 @@ export default function PhoneShowcase() {
         {/* ══════════════════════════════════════════════════════════════
             BOTTOM STRIP: TECH STACK BADGES (LEFT) & KEY STATS (RIGHT)
            ══════════════════════════════════════════════════════════════ */}
-        <div className="shrink-0 pt-3 sm:pt-4 border-t border-white/[0.08] flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="shrink-0 pt-3 sm:pt-4 flex flex-col md:flex-row items-center justify-between gap-4">
           
           {/* Left: 4 Technology Badges (Flutter, Dart, SQLite, Local Notifications) */}
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 sm:gap-2.5">
