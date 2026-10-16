@@ -254,12 +254,6 @@ export default function Hero() {
               style={{ left: '80.7%', top: '75.9%', animationDuration: '2.5s' }}
             />
           </div>
-
-          {/* Seamless bottom blend into next section */}
-          <div
-            className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-[#06080E]/70 to-[#06080E] pointer-events-none z-[4]"
-            aria-hidden="true"
-          />
         </div>
       </div>
 
@@ -267,6 +261,12 @@ export default function Hero() {
       <div className="absolute inset-0 z-[1] pointer-events-none" aria-hidden="true">
         <HeroScene mousePos={mousePos} scrollY={scrollY} />
       </div>
+
+      {/* ── Seamless Bottom Fade into Featured Projects ── */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent via-[#06080E]/80 to-[#06080E] pointer-events-none z-[5]"
+        aria-hidden="true"
+      />
 
       {/* ══════════════════════════════════════════════════════════════
           4. EXACT CENTERED EDITORIAL TYPOGRAPHY & INTERACTIVE CONTROLS

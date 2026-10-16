@@ -334,6 +334,16 @@ export default function ProjectGrid() {
       className="py-24 md:py-32 lg:py-40 relative overflow-hidden bg-[#06080E]"
       aria-labelledby="projects-heading"
     >
+      {/* ── Seamless Boundary Blends (Top & Bottom) ── */}
+      <div
+        className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        aria-hidden="true"
+      />
+
       {/* ── Seamless Ambient Lighting ── */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute top-1/4 -left-24 w-[550px] h-[550px] rounded-full bg-[#00F0FF]/08 blur-[140px]" />

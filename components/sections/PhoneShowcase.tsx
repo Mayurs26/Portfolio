@@ -321,12 +321,22 @@ export default function PhoneShowcase() {
           - Floating Micro Confetti Cubes (magenta, cyan, amber)
          ══════════════════════════════════════════════════════════════ */}
 
+      {/* ── Seamless Boundary Blends (Top & Bottom) ── */}
+      <div
+        className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        aria-hidden="true"
+      />
+
       {/* ── Ambient Radial Glows ── */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(circle at 12% 78%, rgba(249, 115, 22, 0.14) 0%, transparent 42%), radial-gradient(circle at 56% 45%, rgba(6, 182, 212, 0.15) 0%, rgba(14, 165, 233, 0.05) 32%, transparent 64%), radial-gradient(circle at 86% 50%, rgba(168, 85, 247, 0.10) 0%, transparent 40%)',
+            'radial-gradient(circle at 12% 78%, rgba(249, 115, 22, 0.10) 0%, transparent 45%), radial-gradient(circle at 56% 45%, rgba(6, 182, 212, 0.11) 0%, rgba(14, 165, 233, 0.04) 32%, transparent 64%), radial-gradient(circle at 86% 50%, rgba(168, 85, 247, 0.07) 0%, transparent 45%)',
         }}
       />
 

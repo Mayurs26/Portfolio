@@ -107,6 +107,16 @@ export default function About() {
           ATMOSPHERIC LIGHTING & FLOATING 3D SHAPES (EXACT SHOWCASE THEME)
          ══════════════════════════════════════════════════════════════ */}
 
+      {/* ── Seamless Boundary Blends (Top & Bottom) ── */}
+      <div
+        className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        aria-hidden="true"
+      />
+
       {/* ── Ambient Radial Glows ── */}
       <div
         className="absolute inset-0 pointer-events-none"

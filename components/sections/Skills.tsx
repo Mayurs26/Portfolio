@@ -237,6 +237,16 @@ export default function Skills() {
       aria-labelledby="skills-heading"
       className="py-24 md:py-32 relative overflow-hidden bg-[#06080E]"
     >
+      {/* ── Seamless Boundary Blends (Top & Bottom) ── */}
+      <div
+        className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        aria-hidden="true"
+      />
+
       {/* Seamless Ambient Lighting */}
       <div
         aria-hidden="true"
