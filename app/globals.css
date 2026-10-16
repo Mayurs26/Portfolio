@@ -1,26 +1,264 @@
 @import "tailwindcss";
 
+/* ─── Cyber Sunset / Digital Skyline Theme Tokens ───────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Deep Nocturnal Canvas */
+  --bg-dark:       #07090E;  /* Obsidian base */
+  --bg-surface:    #0F172A;  /* Deep slate/navy surface */
+  --bg-card:       #131D31;  /* Card base */
+  --bg-elevated:   #1A253C;  /* Elevated panel */
+
+  /* Vibrant Accents from Skyline Banner */
+  --accent-cyan:   #22D3EE;  /* Electric Cyan / Tech circuitry */
+  --accent-amber:  #F59E0B;  /* Sunset Amber / Warm golden energy */
+  --accent-coral:  #F43F5E;  /* Twilight Coral / Rose */
+  --accent-purple: #8B5CF6;  /* Digital Violet / Neon Indigo */
+
+  /* Typography */
+  --text-primary:  #F8FAFC;  /* Crisp luminous white */
+  --text-muted:    #94A3B8;  /* Refined slate */
+  --text-dim:      #64748B;  /* Subtle captions */
+
+  /* Legacy color aliases for existing component compatibility */
+  --sage-gray:     #0F172A;
+  --olive-sage:    #1E293B;
+  --warm-ivory:    #F8FAFC;
+  --dusty-blue:    #22D3EE;
+  --near-black:    #07090E;
 }
 
+/* ─── Tailwind v4 theme ─────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-cyber-dark:   var(--bg-dark);
+  --color-cyber-surface:var(--bg-surface);
+  --color-cyber-card:   var(--bg-card);
+  --color-cyber-cyan:   var(--accent-cyan);
+  --color-cyber-amber:  var(--accent-amber);
+  --color-cyber-coral:  var(--accent-coral);
+  --color-cyber-purple: var(--accent-purple);
+
+  --color-sage-gray:    var(--bg-surface);
+  --color-olive-sage:   var(--bg-elevated);
+  --color-warm-ivory:   var(--text-primary);
+  --color-dusty-blue:   var(--accent-cyan);
+  --color-near-black:   var(--bg-dark);
+
+  --font-display: var(--font-playfair);
+  --font-heading: var(--font-syne);
+  --font-sans:    var(--font-inter);
+  --font-mono:    var(--font-jetbrains);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base resets ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-cyan) var(--bg-dark);
+  background-color: var(--bg-dark);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent-cyan), var(--accent-coral), var(--accent-amber));
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover { background: #FFFFFF; }
+
+::selection { background: var(--accent-cyan); color: var(--bg-dark); }
+
+/* ─── Focus ─────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+/* ─── Skip link ─────────────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -9999px; left: 1rem;
+  z-index: 9999;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-amber));
+  color: var(--bg-dark);
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  transition: top 0.15s ease;
+  box-shadow: 0 10px 30px rgba(34, 211, 238, 0.4);
+}
+.skip-link:focus { top: 1rem; }
+
+/* ─── Film grain overlay ────────────────────────────────────────── */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ─── Letter reveal container ──────────────────────────────────── */
+.letter-clip {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  line-height: 1.05;
+}
+
+/* ─── 3D Perspective & Depth utilities ─────────────────────────── */
+.perspective-600  { perspective: 600px; }
+.perspective-800  { perspective: 800px; }
+.perspective-1000 { perspective: 1000px; }
+.perspective-1200 { perspective: 1200px; }
+.transform-3d     { transform-style: preserve-3d; }
+.preserve-3d      { transform-style: preserve-3d; }
+
+.translate-z-10 { transform: translateZ(10px); }
+.translate-z-20 { transform: translateZ(20px); }
+.translate-z-30 { transform: translateZ(30px); }
+.translate-z-40 { transform: translateZ(40px); }
+
+/* ─── Tilt card ─────────────────────────────────────────────────── */
+.tilt-card { transform-style: preserve-3d; will-change: transform; }
+
+/* ─── Cyber Skyline Atmospheric Glows ───────────────────────────── */
+.glow-cyan {
+  background: radial-gradient(ellipse at center, rgba(34, 211, 238, 0.35) 0%, transparent 70%);
+}
+.glow-amber {
+  background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.35) 0%, transparent 70%);
+}
+.glow-coral {
+  background: radial-gradient(ellipse at center, rgba(244, 63, 94, 0.30) 0%, transparent 70%);
+}
+.glow-purple {
+  background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.30) 0%, transparent 70%);
+}
+
+.glow-skyline-aurora {
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgba(34, 211, 238, 0.22) 0%,
+    rgba(244, 63, 94, 0.18) 35%,
+    rgba(245, 158, 11, 0.15) 60%,
+    rgba(139, 92, 246, 0.10) 80%,
+    transparent 100%
+  );
+}
+
+/* Backward compatible glow classes */
+.glow-blue  { background: radial-gradient(ellipse at center, rgba(34, 211, 238, 0.30) 0%, transparent 70%); }
+.glow-olive { background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.28) 0%, transparent 70%); }
+.glow-sage  { background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.24) 0%, transparent 70%); }
+
+/* ─── Cyber Glassmorphism ───────────────────────────────────────── */
+.glass-cyber {
+  background: linear-gradient(
+    135deg,
+    rgba(19, 29, 49, 0.70) 0%,
+    rgba(15, 23, 42, 0.85) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+}
+
+.glass-cyber-hover {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-cyber-hover:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(34, 211, 238, 0.10) 0%,
+    rgba(244, 63, 94, 0.08) 50%,
+    rgba(19, 29, 49, 0.90) 100%
+  );
+  border-color: rgba(34, 211, 238, 0.40);
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.8), 0 0 35px rgba(34, 211, 238, 0.18);
+  transform: translateY(-4px);
+}
+
+/* ─── Gradient Text Styles ──────────────────────────────────────── */
+.text-gradient-sunset {
+  background: linear-gradient(135deg, #F8FAFC 20%, #F59E0B 60%, #F43F5E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #F8FAFC 25%, #22D3EE 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-skyline {
+  background: linear-gradient(135deg, #22D3EE 0%, #F43F5E 50%, #F59E0B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ─── Circuit Grid Background ──────────────────────────────────── */
+.circuit-grid {
+  background-image: 
+    linear-gradient(rgba(34, 211, 238, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.035) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(248, 250, 252, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ─── Phone mockup ──────────────────────────────────────────────── */
+.phone-frame  { transform-style: preserve-3d; will-change: transform; }
+.phone-screen { backface-visibility: hidden; overflow: hidden; }
+
+/* ─── Marquee ───────────────────────────────────────────────────── */
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.animate-marquee { animation: marquee 24s linear infinite; }
+
+/* ─── Keyframe Floating Animations ──────────────────────────────── */
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(2deg); }
+}
+.animate-float {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* ─── Reduced motion ────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-marquee, .animate-float, .animate-pulse-glow { animation: none; }
+  .tilt-card { transition: none; }
 }
