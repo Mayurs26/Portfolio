@@ -291,6 +291,8 @@ const showcaseList: ShowcaseProject[] = [
 ];
 
 // ─── Modern 3D Smartphone Component ──────────────────────────────────
+// Preserves exact 9:19.5 smartphone aspect ratio at all viewports.
+// Uses shrink-0 to prevent flex compression and proportional scaling without distortion.
 interface ModernPhoneProps {
   screen: ShowcaseScreen;
   isCenter?: boolean;
@@ -317,15 +319,15 @@ function ModernPhone({
   // Parallax translation calculations
   const dynamicTiltY = prefersReducedMotion ? 0 : tiltAngle + mouse.x * (isCenter ? 4 : 7);
   const dynamicTiltX = prefersReducedMotion ? 0 : -mouse.y * (isCenter ? 5 : 4);
-  const dynamicZ = isCenter ? 28 : (phoneIndex === 0 ? -mouse.x * 14 : mouse.x * 14);
+  const dynamicZ = isCenter ? 26 : (phoneIndex === 0 ? -mouse.x * 12 : mouse.x * 12);
 
   return (
     <div
       onClick={onFlip}
-      className={`relative cursor-pointer transition-transform duration-300 group select-none ${
+      className={`relative cursor-pointer transition-transform duration-300 group select-none shrink-0 snap-center ${
         isCenter
-          ? 'w-[200px] sm:w-[230px] lg:w-[245px] xl:w-[260px] h-[430px] sm:h-[490px] lg:h-[520px] xl:h-[550px] z-20'
-          : 'w-[185px] sm:w-[210px] lg:w-[225px] xl:w-[238px] h-[395px] sm:h-[455px] lg:h-[485px] xl:h-[515px] z-10 opacity-90 hover:opacity-100 hover:z-30'
+          ? 'w-[215px] sm:w-[235px] md:w-[220px] lg:w-[245px] xl:w-[260px] aspect-[9/19.5] z-20'
+          : 'w-[195px] sm:w-[215px] md:w-[200px] lg:w-[225px] xl:w-[238px] aspect-[9/19.5] z-10 opacity-90 hover:opacity-100 hover:z-30'
       }`}
       style={{
         perspective: '1400px',
@@ -354,33 +356,33 @@ function ModernPhone({
         >
           {/* Outer Titanium Chassis */}
           <div
-            className={`relative w-full h-full rounded-[38px] sm:rounded-[44px] p-2 sm:p-2.5 bg-gradient-to-b from-[#2E3C4E] via-[#16212E] to-[#0A1017] border-[2px] sm:border-[2.5px] transition-all duration-300 ${
+            className={`relative w-full h-full rounded-[34px] sm:rounded-[42px] p-2 sm:p-2.5 bg-gradient-to-b from-[#2E3C4E] via-[#16212E] to-[#0A1017] border-[2px] sm:border-[2.5px] transition-all duration-300 flex flex-col justify-between ${
               isCenter
-                ? 'border-[#00F0FF]/80 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.98),0_0_45px_rgba(0,240,255,0.22)]'
-                : 'border-[#38BDF8]/40 group-hover:border-[#00F0FF]/60 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.95),0_0_30px_rgba(56,189,248,0.12)]'
+                ? 'border-[#00F0FF]/80 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.98),0_0_40px_rgba(0,240,255,0.22)]'
+                : 'border-[#38BDF8]/40 group-hover:border-[#00F0FF]/60 shadow-[0_15px_45px_-15px_rgba(0,0,0,0.95),0_0_25px_rgba(56,189,248,0.12)]'
             }`}
           >
             {/* Subtle Chamfer Rim Light */}
-            <div className="absolute inset-0 rounded-[38px] sm:rounded-[44px] ring-1 ring-white/15 pointer-events-none" />
+            <div className="absolute inset-0 rounded-[34px] sm:rounded-[42px] ring-1 ring-white/15 pointer-events-none" />
 
             {/* Hardware Side Buttons */}
             {/* Left: Volume Up / Down */}
-            <div className="absolute -left-[3.5px] top-24 w-1 h-7 rounded-l-xs bg-[#475569] border-l border-white/20" />
-            <div className="absolute -left-[3.5px] top-34 w-1 h-7 rounded-l-xs bg-[#475569] border-l border-white/20" />
+            <div className="absolute -left-[3.5px] top-20 w-1 h-6 rounded-l-xs bg-[#475569] border-l border-white/20" />
+            <div className="absolute -left-[3.5px] top-28 w-1 h-6 rounded-l-xs bg-[#475569] border-l border-white/20" />
             {/* Right: Power / Action Button */}
-            <div className="absolute -right-[3.5px] top-28 w-1 h-11 rounded-r-xs bg-[#475569] border-r border-white/20" />
+            <div className="absolute -right-[3.5px] top-24 w-1 h-10 rounded-r-xs bg-[#475569] border-r border-white/20" />
 
-            {/* Inner Curved OLED Screen Area */}
-            <div className="relative w-full h-full rounded-[30px] sm:rounded-[36px] overflow-hidden bg-black flex flex-col justify-between shadow-inner">
+            {/* Inner Curved OLED Screen Area (Strictly Proportional) */}
+            <div className="relative w-full flex-1 rounded-[26px] sm:rounded-[34px] overflow-hidden bg-black flex flex-col justify-between shadow-inner">
               {/* Top Dynamic Island & Status Bar */}
-              <div className="relative z-30 px-3.5 pt-2 pb-1 flex items-center justify-between bg-black/70 backdrop-blur-xs select-none">
+              <div className="relative z-30 px-3.5 pt-2 pb-1 flex items-center justify-between bg-black/75 backdrop-blur-xs select-none">
                 {/* Clock */}
                 <span className="font-[family-name:var(--font-jetbrains)] text-[8px] sm:text-[9px] text-white/90 font-bold tracking-tight">
                   9:41
                 </span>
 
                 {/* Dynamic Island Pill with Camera & Sensor */}
-                <div className="w-14 sm:w-16 h-3 sm:h-3.5 rounded-full bg-black/95 border border-white/15 shadow-inner flex items-center justify-between px-2">
+                <div className="w-13 sm:w-15 h-3 sm:h-3.5 rounded-full bg-black/95 border border-white/15 shadow-inner flex items-center justify-between px-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF]/60 border border-[#00F0FF] shadow-[0_0_5px_#00F0FF]" />
                   <span className="w-1 h-1 rounded-full bg-white/20" />
                 </div>
@@ -396,15 +398,15 @@ function ModernPhone({
                 </div>
               </div>
 
-              {/* Screenshot Display with Smooth Animated Transition */}
+              {/* Screenshot Display with Proportional Fill */}
               <div className="relative flex-1 w-full overflow-hidden">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={screen.file}
-                    initial={{ opacity: 0, scale: 0.94 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.94 }}
-                    transition={{ duration: 0.4, ease: EASE }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.35, ease: EASE }}
                     className="relative w-full h-full"
                   >
                     <Image
@@ -412,7 +414,7 @@ function ModernPhone({
                       alt={screen.label}
                       fill
                       priority
-                      sizes="(max-width: 640px) 210px, 280px"
+                      sizes="(max-width: 640px) 215px, (max-width: 1024px) 240px, 280px"
                       className="object-cover object-top"
                     />
                   </motion.div>
@@ -436,9 +438,9 @@ function ModernPhone({
           </div>
 
           {/* Under-Phone Screen Tag Badge */}
-          <div className="flex items-center justify-center mt-3">
+          <div className="flex items-center justify-center mt-2.5">
             <span
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9.5px] sm:text-[10.5px] font-[family-name:var(--font-jetbrains)] font-bold tracking-[0.16em] uppercase backdrop-blur-md transition-all duration-300 ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] sm:text-[10px] font-[family-name:var(--font-jetbrains)] font-bold tracking-[0.16em] uppercase backdrop-blur-md transition-all duration-300 ${
                 isCenter
                   ? 'bg-[#00F0FF]/15 border border-[#00F0FF]/50 text-[#00F0FF] shadow-[0_0_12px_rgba(0,240,255,0.3)]'
                   : 'bg-[#0D151E]/90 border border-white/10 text-white/60 group-hover:text-white/90'
@@ -465,18 +467,18 @@ function ModernPhone({
             transform: 'rotateY(180deg)',
           }}
         >
-          <div className="relative w-full h-full rounded-[38px] sm:rounded-[44px] p-4 sm:p-5 bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#080D14] border-[2px] sm:border-[2.5px] border-[#38BDF8]/50 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.98),0_0_40px_rgba(249,115,22,0.18)] flex flex-col justify-between select-none">
+          <div className="relative w-full h-full rounded-[34px] sm:rounded-[42px] p-4 sm:p-5 bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#080D14] border-[2px] sm:border-[2.5px] border-[#38BDF8]/50 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.98),0_0_35px_rgba(249,115,22,0.18)] flex flex-col justify-between select-none">
             {/* Top Triple Sapphire Camera Bump */}
             <div className="flex items-start justify-between">
-              <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl bg-[#16212E]/90 border border-white/20 p-2 shadow-lg grid grid-cols-2 gap-1.5 items-center justify-items-center">
-                <div className="w-5 sm:w-6 h-5 sm:h-6 rounded-full bg-slate-900 border border-slate-600 flex items-center justify-center">
+              <div className="w-14 sm:w-18 h-14 sm:h-18 rounded-2xl bg-[#16212E]/90 border border-white/20 p-2 shadow-lg grid grid-cols-2 gap-1.5 items-center justify-items-center">
+                <div className="w-4.5 sm:w-5.5 h-4.5 sm:h-5.5 rounded-full bg-slate-900 border border-slate-600 flex items-center justify-center">
                   <div className="w-2 h-2 rounded-full bg-[#00F0FF]/40 border border-[#00F0FF]" />
                 </div>
-                <div className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]/80 shadow-[0_0_6px_#F59E0B]" />
-                <div className="w-5 sm:w-6 h-5 sm:h-6 rounded-full bg-slate-900 border border-slate-600 flex items-center justify-center">
+                <div className="w-2 h-2 rounded-full bg-[#F59E0B]/80 shadow-[0_0_6px_#F59E0B]" />
+                <div className="w-4.5 sm:w-5.5 h-4.5 sm:h-5.5 rounded-full bg-slate-900 border border-slate-600 flex items-center justify-center">
                   <div className="w-2 h-2 rounded-full bg-[#00F0FF]/40 border border-[#00F0FF]" />
                 </div>
-                <div className="w-3.5 h-3.5 rounded-full bg-black/90 border border-white/20" />
+                <div className="w-3 h-3 rounded-full bg-black/90 border border-white/20" />
               </div>
 
               {/* Minimalist 3D Chip Badge */}
@@ -487,17 +489,17 @@ function ModernPhone({
 
             {/* Center Monogram & Specs */}
             <div className="flex flex-col items-center text-center my-auto">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#00F0FF]/20 to-[#F97316]/20 border border-white/20 flex items-center justify-center mb-3 shadow-md">
-                <FlutterIcon size={24} />
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#00F0FF]/20 to-[#F97316]/20 border border-white/20 flex items-center justify-center mb-2.5 shadow-md">
+                <FlutterIcon size={22} />
               </div>
-              <h4 className="font-[family-name:var(--font-syne)] font-bold text-sm text-white mb-1">
+              <h4 className="font-[family-name:var(--font-syne)] font-bold text-xs sm:text-sm text-white mb-0.5">
                 {projectTitle}
               </h4>
-              <p className="font-[family-name:var(--font-jetbrains)] text-[10px] text-[#00F0FF] uppercase tracking-widest font-semibold mb-3">
+              <p className="font-[family-name:var(--font-jetbrains)] text-[9.5px] text-[#00F0FF] uppercase tracking-widest font-semibold mb-2.5">
                 FLUTTER · 60 FPS
               </p>
 
-              <div className="space-y-1.5 text-[10px] font-[family-name:var(--font-inter)] text-white/60">
+              <div className="space-y-1 text-[9.5px] font-[family-name:var(--font-inter)] text-white/60">
                 <p>• Clean Architecture</p>
                 <p>• Offline-First SQLite</p>
                 <p>• Hardware Accel 3D</p>
@@ -506,7 +508,7 @@ function ModernPhone({
 
             {/* Bottom Flip Back Button */}
             <div className="flex justify-center pt-2 border-t border-white/10">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-[10px] font-[family-name:var(--font-jetbrains)] text-white/80 transition-colors">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-[9.5px] font-[family-name:var(--font-jetbrains)] text-white/80 transition-colors">
                 <RotateCcw size={11} className="text-[#00F0FF]" />
                 <span>Click to Flip Back</span>
               </div>
@@ -669,7 +671,7 @@ export default function PhoneShowcase() {
       <div className="relative w-full max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-10 flex flex-col justify-between z-10">
         
         {/* ── TOP HEADER BAR: PROJECT CONTROLS & 3S PROGRESS ── */}
-        <div className="flex flex-wrap items-center justify-between gap-4 shrink-0 pb-4 border-b border-white/5">
+        <div className="flex flex-wrap items-center justify-between gap-3.5 shrink-0 pb-4 border-b border-white/5">
           {/* Left: • FEATURED PROJECTS */}
           <div className="flex items-center gap-2.5">
             <span className="w-2 h-2 rounded-full bg-[#00F0FF] shadow-[0_0_10px_#00F0FF]" />
@@ -775,7 +777,7 @@ export default function PhoneShowcase() {
         {/* ══════════════════════════════════════════════════════════════
             MAIN SHOWCASE GRID:
             - Column 1 (Left): Project Details, Gradient Title, Description, Buttons
-            - Column 2 (Center): 3 BIG, SEPARATED, MODERN 3D PHONES (NO OVERLAP)
+            - Column 2 (Center): 3 BIG, PROPORTIONAL, SEPARATED PHONES (NO STRETCHING)
             - Column 3 (Right): Connected Feature Callouts & 3D Flip Quick Control
            ══════════════════════════════════════════════════════════════ */}
         <div
@@ -787,7 +789,7 @@ export default function PhoneShowcase() {
           {/* ────────────────────────────────────────────────────────────
               COLUMN 1 (LEFT): Counter, Badge, Editorial Gradient Title, CTAs
              ──────────────────────────────────────────────────────────── */}
-          <div className="lg:col-span-3 xl:col-span-3 flex flex-col justify-center z-20">
+          <div className="order-1 lg:col-span-3 xl:col-span-3 flex flex-col justify-center z-20">
             <AnimatePresence mode="wait">
               <motion.div
                 key={project.id + '-left'}
@@ -877,20 +879,20 @@ export default function PhoneShowcase() {
           </div>
 
           {/* ────────────────────────────────────────────────────────────
-              COLUMN 2 (CENTER): 3 BIG, MODERN, COMPLETELY SEPARATED PHONES
-              - No overlap! Clear spacing (gap-4 sm:gap-6 lg:gap-7)
-              - 3D perspective with real-time mouse parallax
-              - Smooth 3-second screen updates with page-flip animation
-              - Interactive 3D flip card support on click
+              COLUMN 2 (CENTER): 3 PROPORTIONAL SMARTPHONES (STRICT 9:19.5 RATIO)
+              - shrink-0 prevents flexbox compression
+              - aspect-[9/19.5] preserves exact smartphone proportions
+              - smooth horizontal snap swipe on mobile, side-by-side on desktop
+              - NO distortion, NO stretching, NO squeezed screenshots!
              ──────────────────────────────────────────────────────────── */}
           <div
-            className="lg:col-span-7 xl:col-span-7 flex flex-col items-center justify-center relative min-h-[460px] sm:min-h-[520px] lg:min-h-[560px]"
+            className="order-2 lg:col-span-7 xl:col-span-7 flex flex-col items-center justify-center relative w-full"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
             {/* 3D Phones Stage */}
             <div
-              className="relative flex items-center justify-center gap-4 sm:gap-6 lg:gap-7 w-full overflow-x-auto sm:overflow-visible py-4 px-2 sm:px-0 no-scrollbar"
+              className="relative flex items-center gap-4 sm:gap-6 lg:gap-7 w-full overflow-x-auto md:overflow-visible py-4 px-4 sm:px-2 md:px-0 no-scrollbar justify-start md:justify-center snap-x snap-mandatory"
               style={{
                 perspective: '1400px',
                 transformStyle: 'preserve-3d',
@@ -902,7 +904,7 @@ export default function PhoneShowcase() {
                 isCenter={false}
                 isFlipped={flippedState[0]}
                 onFlip={() => toggleFlipSingle(0)}
-                tiltAngle={9}
+                tiltAngle={8}
                 prefersReducedMotion={prefersReducedMotion}
                 mouse={mouse}
                 phoneIndex={0}
@@ -928,7 +930,7 @@ export default function PhoneShowcase() {
                 isCenter={false}
                 isFlipped={flippedState[2]}
                 onFlip={() => toggleFlipSingle(2)}
-                tiltAngle={-9}
+                tiltAngle={-8}
                 prefersReducedMotion={prefersReducedMotion}
                 mouse={mouse}
                 phoneIndex={2}
@@ -940,7 +942,7 @@ export default function PhoneShowcase() {
           {/* ────────────────────────────────────────────────────────────
               COLUMN 3 (RIGHT): CONNECTED FEATURE CALLOUTS & QUICK CONTROLS
              ──────────────────────────────────────────────────────────── */}
-          <div className="lg:col-span-2 xl:col-span-2 flex flex-col justify-center pl-0 lg:pl-2 z-20">
+          <div className="order-3 lg:col-span-2 xl:col-span-2 flex flex-col justify-center pl-0 lg:pl-2 z-20">
             <AnimatePresence mode="wait">
               <motion.div
                 key={project.id + '-right'}

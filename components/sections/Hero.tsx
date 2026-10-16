@@ -47,7 +47,7 @@ function AnimatedName() {
     return (
       <h1
         id="hero-name"
-        className="font-[family-name:var(--font-playfair)] font-medium text-[clamp(2.8rem,6.5vw,7.2rem)] leading-[0.92] tracking-[-0.025em]"
+        className="font-[family-name:var(--font-playfair)] font-medium text-[clamp(2.6rem,5.6vw,6.4rem)] leading-[0.94] tracking-[-0.025em]"
       >
         <span className="block text-white">Mayur</span>
         <span className="block bg-gradient-to-r from-[#00F0FF] via-[#818CF8] via-[#EC4899] to-[#F97316] bg-clip-text text-transparent drop-shadow-[0_4px_35px_rgba(0,240,255,0.28)]">
@@ -60,7 +60,7 @@ function AnimatedName() {
   return (
     <h1
       id="hero-name"
-      className="font-[family-name:var(--font-playfair)] font-medium text-[clamp(2.8rem,6.5vw,7.2rem)] leading-[0.92] tracking-[-0.025em]"
+      className="font-[family-name:var(--font-playfair)] font-medium text-[clamp(2.6rem,5.6vw,6.4rem)] leading-[0.94] tracking-[-0.025em]"
       style={{ perspective: '800px' }}
     >
       {/* First Name: Mayur (Crisp luminous white) */}
@@ -88,7 +88,7 @@ function AnimatedName() {
 // 1. Base Robot Character (Stationary Head, Torso, Laptop, Ring)
 // 2. Real-time Mouse/Touch Tracking Eyes (scaled proportionally in %)
 // 3. Laptop Logo Glow Overlay (scaled proportionally in %)
-// All elements share the exact same aspect-ratio box and NEVER detach.
+// Seamless radial alpha mask: ZERO rectangular borders on any background!
 function CharacterUnit({
   eyeOffset,
   prefersReducedMotion,
@@ -98,15 +98,15 @@ function CharacterUnit({
 }) {
   return (
     <div className="relative w-full h-full aspect-[655/848] select-none pointer-events-none">
-      {/* Base Robot Character Body & Head */}
+      {/* Base Robot Character Body & Head with smooth radial transparency */}
       <Image
         src="/images/robot_character_unit.png"
         alt="3D Developer Robot Character"
         fill
         priority
         quality={100}
-        sizes="(max-width: 640px) 180px, (max-width: 1024px) 380px, 560px"
-        className="object-contain pointer-events-none select-none drop-shadow-[0_15px_35px_rgba(0,0,0,0.85)]"
+        sizes="(max-width: 640px) 200px, (max-width: 1024px) 340px, 540px"
+        className="object-contain pointer-events-none select-none drop-shadow-[0_20px_45px_rgba(0,0,0,0.85)]"
       />
 
       {/* ── LEFT EYE SOCKET & DYNAMIC REAL-TIME PUPIL ── */}
@@ -293,115 +293,117 @@ export default function Hero() {
       />
 
       {/* ══════════════════════════════════════════════════════════════
-          4. MAIN RESPONSIVE HERO CONTENT & 3D CHARACTER UNIT
-          - Left Prism: Anchored on the left on desktop (hidden on mobile)
-          - Center: Crisp editorial typography & action buttons
-          - Character Unit: A single responsive unit that sits between eyebrow
-            and name on mobile/tablet, and floats to the right side on desktop!
+          4. MAIN RESPONSIVE HERO CONTENT (CSS GRID LAYOUT)
+          - Desktop (lg+): 2 Columns (Text on Left, Character beside it on Right)
+            -> Completely separate columns, ZERO possibility of overlapping!
+          - Mobile/Tablet (< lg): 1 Column (Character centered above text)
+            -> Proportional, fully visible, clean breathing room!
          ══════════════════════════════════════════════════════════════ */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center my-auto pt-16 sm:pt-20 lg:pt-0">
-        
-        {/* ── 4a. Left 3D Prism (Desktop Widescreen Only) ── */}
-        <div className="hidden lg:block absolute left-[-2%] xl:left-[1%] 2xl:left-[4%] top-1/2 -translate-y-1/2 w-[280px] xl:w-[340px] 2xl:w-[400px] aspect-[480/848] pointer-events-none z-0 select-none opacity-85">
-          <Image
-            src="/images/hero_prism_unit.png"
-            alt=""
-            fill
-            priority
-            sizes="400px"
-            className="object-contain object-left pointer-events-none select-none"
-          />
-        </div>
-
-        {/* ── 4b. Main Centered Editorial Typography ── */}
-        <motion.div
-          initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: EASE }}
-          className="relative z-10 w-full max-w-2xl lg:max-w-3xl flex flex-col items-center text-center py-4"
-        >
-          {/* Eyebrow Capsule */}
-          <div className="mb-2 sm:mb-3">
-            <div className="inline-flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-full bg-[#0D131C]/90 border border-white/10 backdrop-blur-md shadow-lg shadow-black/50">
-              <div className="relative w-5 h-5 rounded-full overflow-hidden border border-white/20 shrink-0">
-                <Image
-                  src="/images/profile-portrait.png"
-                  alt="Mayur Sonawane"
-                  fill
-                  className="object-cover"
-                  sizes="20px"
-                />
-              </div>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF] shadow-[0_0_8px_#00F0FF] animate-pulse" />
-              <span className="font-[family-name:var(--font-jetbrains)] text-[10px] sm:text-[11px] tracking-[0.22em] uppercase text-white/90 font-semibold">
-                FLUTTER DEVELOPER · PUNE, INDIA
-              </span>
-            </div>
-          </div>
-
-          {/* ── 4c. Single Responsive 3D Character Unit ──
-              - Mobile (< lg): centered cleanly in hero flow between eyebrow and name
-              - Desktop (lg+): positioned on the right side as in original design
-              - Eyes and elements are 100% relative children: NEVER detach! */}
-          <div
-            ref={characterRef}
-            className="relative z-10 aspect-[655/848] select-none pointer-events-none transition-all duration-300
-              w-[145px] sm:w-[175px] md:w-[205px] my-2 sm:my-3
-              lg:my-0 lg:absolute lg:right-[-4%] xl:right-[0%] 2xl:right-[5%] lg:top-1/2 lg:-translate-y-1/2 lg:w-[450px] xl:w-[500px] 2xl:w-[560px]"
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-0 flex flex-col justify-center my-auto min-h-[calc(100vh-80px)]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+          
+          {/* ────────────────────────────────────────────────────────────
+              COLUMN 1: TEXT CONTENT (NAME, HEADLINE, DESCRIPTION, BUTTONS)
+              - Desktop (lg:col-span-7): Left-aligned with ample horizontal room
+              - Mobile: Centered below character
+             ──────────────────────────────────────────────────────────── */}
+          <motion.div
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="order-2 lg:order-1 lg:col-span-7 xl:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left z-10"
           >
-            <CharacterUnit
-              eyeOffset={eyeOffset}
-              prefersReducedMotion={prefersReducedMotion}
-            />
-          </div>
+            {/* Eyebrow Capsule */}
+            <div className="mb-3 sm:mb-4">
+              <div className="inline-flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-full bg-[#0D131C]/90 border border-white/10 backdrop-blur-md shadow-lg shadow-black/50">
+                <div className="relative w-5 h-5 rounded-full overflow-hidden border border-white/20 shrink-0">
+                  <Image
+                    src="/images/profile-portrait.png"
+                    alt="Mayur Sonawane"
+                    fill
+                    className="object-cover"
+                    sizes="20px"
+                  />
+                </div>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF] shadow-[0_0_8px_#00F0FF] animate-pulse" />
+                <span className="font-[family-name:var(--font-jetbrains)] text-[10px] sm:text-[11px] tracking-[0.22em] uppercase text-white/90 font-semibold">
+                  FLUTTER DEVELOPER · PUNE, INDIA
+                </span>
+              </div>
+            </div>
 
-          {/* Display Name: Mayur Sonawane. */}
-          <div className="mb-2 sm:mb-3">
-            <AnimatedName />
-          </div>
+            {/* Display Name: Mayur Sonawane. (Unobstructed, full visibility) */}
+            <div className="mb-2 sm:mb-3">
+              <AnimatedName />
+            </div>
 
-          {/* Center Accent Rule with Glowing Cyan Dot */}
-          <div className="flex items-center justify-center gap-3 my-2.5 sm:my-3" aria-hidden="true">
-            <div className="w-16 sm:w-24 h-px bg-gradient-to-r from-transparent via-white/20 to-white/10" />
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF] shadow-[0_0_10px_#00F0FF]" />
-            <div className="w-16 sm:w-24 h-px bg-gradient-to-r from-white/10 via-white/20 to-transparent" />
-          </div>
+            {/* Accent Rule with Glowing Cyan Dot */}
+            <div className="flex items-center justify-center lg:justify-start gap-3 my-2 sm:my-3" aria-hidden="true">
+              <div className="w-16 sm:w-20 h-px bg-gradient-to-r from-transparent lg:from-white/20 via-white/20 to-white/10" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF] shadow-[0_0_10px_#00F0FF]" />
+              <div className="w-16 sm:w-20 h-px bg-gradient-to-r from-white/10 via-white/20 to-transparent" />
+            </div>
 
-          {/* Tagline */}
-          <p className="font-[family-name:var(--font-inter)] text-xs sm:text-sm lg:text-[1.12rem] text-white/80 leading-relaxed max-w-xl mb-5 sm:mb-7 px-2">
-            Building mobile experiences that feel{' '}
-            <span className="text-[#00F0FF] font-semibold drop-shadow-[0_0_12px_rgba(0,240,255,0.45)]">
-              native
-            </span>{' '}
-            and{' '}
-            <span className="text-[#F43F5E] font-semibold drop-shadow-[0_0_12px_rgba(244,63,94,0.45)]">
-              intuitive.
-            </span>
-          </p>
-
-          {/* Action Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-            {/* Primary: View Projects */}
-            <a
-              href="#featured"
-              className="group relative inline-flex p-[1.5px] rounded-full bg-gradient-to-r from-[#00F0FF] via-[#06B6D4] to-[#F97316] shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/35 hover:scale-105 active:scale-95 transition-all duration-300"
-            >
-              <span className="px-5 sm:px-7 py-2.5 sm:py-3 rounded-full bg-[#080B10] flex items-center gap-2.5 text-white font-[family-name:var(--font-syne)] font-bold text-xs sm:text-[13px] group-hover:bg-[#0D1219] transition-colors">
-                <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
-                <span>View Projects</span>
+            {/* Tagline */}
+            <p className="font-[family-name:var(--font-inter)] text-sm sm:text-base lg:text-[1.12rem] text-white/80 leading-relaxed max-w-xl mb-6 sm:mb-7">
+              Building mobile experiences that feel{' '}
+              <span className="text-[#00F0FF] font-semibold drop-shadow-[0_0_12px_rgba(0,240,255,0.45)]">
+                native
+              </span>{' '}
+              and{' '}
+              <span className="text-[#F43F5E] font-semibold drop-shadow-[0_0_12px_rgba(244,63,94,0.45)]">
+                intuitive.
               </span>
-            </a>
+            </p>
 
-            {/* Secondary: Get in Touch */}
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full bg-[#0D131C]/80 border border-white/15 text-white/90 hover:text-white hover:border-white/30 hover:bg-[#141C26] active:scale-95 transition-all duration-300 font-[family-name:var(--font-syne)] font-semibold text-xs sm:text-[13px] backdrop-blur-md"
+            {/* Action Buttons */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 sm:gap-4">
+              {/* Primary: View Projects */}
+              <a
+                href="#featured"
+                className="group relative inline-flex p-[1.5px] rounded-full bg-gradient-to-r from-[#00F0FF] via-[#06B6D4] to-[#F97316] shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/35 hover:scale-105 active:scale-95 transition-all duration-300"
+              >
+                <span className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-full bg-[#080B10] flex items-center gap-2.5 text-white font-[family-name:var(--font-syne)] font-bold text-xs sm:text-[13px] group-hover:bg-[#0D1219] transition-colors">
+                  <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                  <span>View Projects</span>
+                </span>
+              </a>
+
+              {/* Secondary: Get in Touch */}
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2.5 px-6 sm:px-7 py-2.5 sm:py-3 rounded-full bg-[#0D131C]/80 border border-white/15 text-white/90 hover:text-white hover:border-white/30 hover:bg-[#141C26] active:scale-95 transition-all duration-300 font-[family-name:var(--font-syne)] font-semibold text-xs sm:text-[13px] backdrop-blur-md"
+              >
+                <Mail size={14} aria-hidden="true" />
+                <span>Get in Touch</span>
+              </a>
+            </div>
+          </motion.div>
+
+          {/* ────────────────────────────────────────────────────────────
+              COLUMN 2: 3D CHARACTER UNIT (STANDALONE RESPONSIVE UNIT)
+              - Desktop (lg:col-span-5): Sits beside text in its own column, NO overlap
+              - Mobile (order-1): Sits above text, perfectly proportioned and centered
+             ──────────────────────────────────────────────────────────── */}
+          <motion.div
+            initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
+            className="order-1 lg:order-2 lg:col-span-5 xl:col-span-5 flex items-center justify-center lg:justify-end z-10"
+          >
+            <div
+              ref={characterRef}
+              className="relative aspect-[655/848] select-none pointer-events-none transition-all duration-300
+                w-[160px] sm:w-[200px] md:w-[240px] lg:w-[420px] xl:w-[480px] 2xl:w-[520px]"
             >
-              <Mail size={14} aria-hidden="true" />
-              <span>Get in Touch</span>
-            </a>
-          </div>
-        </motion.div>
+              <CharacterUnit
+                eyeOffset={eyeOffset}
+                prefersReducedMotion={prefersReducedMotion}
+              />
+            </div>
+          </motion.div>
+
+        </div>
       </div>
     </section>
   );
