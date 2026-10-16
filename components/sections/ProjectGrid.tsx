@@ -331,16 +331,16 @@ export default function ProjectGrid() {
   return (
     <section
       id="projects"
-      className="py-24 md:py-32 lg:py-40 relative overflow-hidden bg-[#06080E]"
+      className="py-10 md:py-14 lg:py-16 relative overflow-hidden bg-[#06080E]"
       aria-labelledby="projects-heading"
     >
       {/* ── Seamless Boundary Blends (Top & Bottom) ── */}
       <div
-        className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
         aria-hidden="true"
       />
       <div
-        className="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
         aria-hidden="true"
       />
 
@@ -364,7 +364,7 @@ export default function ProjectGrid() {
           initial={prefersReducedMotion ? {} : { opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: EASE }}
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-16"
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-10 sm:mb-12"
         >
           <div>
             <div className="flex items-center gap-3 mb-3">
@@ -387,7 +387,7 @@ export default function ProjectGrid() {
         </motion.div>
 
         {/* Featured grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 mb-8 sm:mb-10">
           {featured.map((project, i) => (
             <FeaturedCard key={project.id} project={project} index={i} />
           ))}
@@ -398,7 +398,7 @@ export default function ProjectGrid() {
           initial={prefersReducedMotion ? {} : { opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="flex items-center justify-center my-12"
+          className="flex items-center justify-center my-8 sm:my-10"
         >
           <span className="font-[family-name:var(--font-jetbrains)] text-[11px] tracking-[0.25em] uppercase text-[#22D3EE]/80 font-semibold px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-sm">
             Utility &amp; Experimental Apps
@@ -417,7 +417,7 @@ export default function ProjectGrid() {
           initial={prefersReducedMotion ? {} : { opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.5, ease: EASE }}
-          className="mt-16 text-center"
+          className="mt-10 sm:mt-12 text-center"
         >
           <a
             href="https://github.com/Mayurs26"

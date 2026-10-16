@@ -209,15 +209,15 @@ export default function Approach() {
   return (
     <section
       aria-labelledby="approach-heading"
-      className="relative w-full px-6 py-24 md:px-12 md:py-32 lg:px-24 overflow-hidden bg-[#06080E]"
+      className="relative w-full px-6 py-10 md:px-12 md:py-14 lg:px-20 lg:py-16 overflow-hidden bg-[#06080E]"
     >
       {/* ── Seamless Boundary Blends (Top & Bottom) ── */}
       <div
-        className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
         aria-hidden="true"
       />
       <div
-        className="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
         aria-hidden="true"
       />
 
@@ -249,7 +249,7 @@ export default function Approach() {
               : { opacity: 0, y: 30 }
           }
           transition={{ duration: 0.65, ease: EASE }}
-          className="mb-16 md:mb-20"
+          className="mb-10 md:mb-12"
         >
           <div className="flex items-center gap-3 mb-3">
             <span className="w-2 h-2 rounded-full bg-[#22D3EE]" />

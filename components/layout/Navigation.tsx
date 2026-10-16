@@ -9,7 +9,7 @@ import { personal } from '@/data/personal';
 import { EASE } from '@/lib/motion';
 
 const navLinks = [
-  { href: '/#featured', label: 'Projects', active: true },
+  { href: '/#featured', label: 'Projects' },
   { href: '/#skills', label: 'Skills' },
   { href: '/#about', label: 'About' },
   { href: '/#contact', label: 'Contact' },
@@ -106,26 +106,16 @@ export default function Navigation() {
               <span>MAYUR SONAWANE</span>
             </Link>
 
-            {/* Desktop Navigation Links (Centered, with active cyan indicator) */}
+            {/* Desktop Navigation Links (Centered) */}
             <ul className="hidden md:flex items-center gap-8 lg:gap-10" role="list">
               {navLinks.map((link) => (
                 <li key={link.href} className="relative">
                   <Link
                     href={link.href}
-                    className={`font-[family-name:var(--font-syne)] text-sm tracking-wide transition-colors duration-200 ${
-                      link.active
-                        ? 'text-white font-semibold'
-                        : 'text-white/60 hover:text-white'
-                    }`}
+                    className="font-[family-name:var(--font-syne)] text-sm tracking-wide text-white/70 hover:text-white transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
-                  {link.active && (
-                    <span
-                      className="absolute -bottom-1.5 left-0 right-0 h-[2px] rounded-full bg-[#00F0FF] shadow-[0_0_8px_#00F0FF]"
-                      aria-hidden="true"
-                    />
-                  )}
                 </li>
               ))}
             </ul>

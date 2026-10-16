@@ -22,7 +22,7 @@ export default function Footer() {
         aria-hidden="true"
       />
 
-      <div className="max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-16 relative z-10">
+      <div className="max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16 py-8 md:py-10 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           {/* Brand + bio */}
           <div className="max-w-sm">

@@ -26,9 +26,19 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="py-24 md:py-32 lg:py-40 relative overflow-hidden bg-[#06080E]"
+      className="py-10 md:py-14 lg:py-16 relative overflow-hidden bg-[#06080E]"
       aria-labelledby="contact-heading"
     >
+      {/* ── Seamless Boundary Blends (Top & Bottom) ── */}
+      <div
+        className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        aria-hidden="true"
+      />
+
       {/* Seamless Ambient Lighting */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute bottom-0 left-0 w-[550px] h-[550px] rounded-full bg-[#22D3EE]/09 blur-[140px] -translate-x-1/4" />
@@ -70,12 +80,12 @@ export default function Contact() {
             </span>
           </h2>
 
-          <p className="font-[family-name:var(--font-inter)] text-base sm:text-lg text-[#94A3B8] leading-relaxed mb-12 max-w-xl">
+          <p className="font-[family-name:var(--font-inter)] text-base sm:text-lg text-[#94A3B8] leading-relaxed mb-8 sm:mb-10 max-w-xl">
             Whether you have a Flutter role, a freelance mobile application, or just want to connect — my inbox is always open.
           </p>
 
           {/* Email row with copy action */}
-          <div className="flex flex-wrap items-center gap-4 mb-14">
+          <div className="flex flex-wrap items-center gap-4 mb-8 sm:mb-10">
             <a
               href={`mailto:${personal.email}`}
               className="inline-flex items-center gap-3 font-[family-name:var(--font-syne)] font-bold text-sm bg-gradient-to-r from-[#22D3EE] via-[#F43F5E] to-[#F59E0B] text-[#07090E] rounded-full px-8 py-4 hover:shadow-xl hover:shadow-[#22D3EE]/30 active:scale-[0.97] transition-all duration-300"
@@ -104,7 +114,7 @@ export default function Contact() {
           </div>
 
           {/* Direct Social Links */}
-          <div className="flex flex-wrap items-center gap-4 pt-8 border-t border-white/10">
+          <div className="flex flex-wrap items-center gap-4 pt-6 border-t border-white/5">
             <a
               href={personal.github}
               target="_blank"

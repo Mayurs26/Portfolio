@@ -208,7 +208,7 @@ function CategoryRow({ category, skillList, isLast, reduced }: CategoryRowProps)
 function MarqueeStrip() {
   return (
     <div
-      className="overflow-hidden mt-16 motion-reduce:hidden"
+      className="overflow-hidden mt-8 sm:mt-10 motion-reduce:hidden"
       aria-hidden="true"
     >
       <div className="flex w-max animate-marquee gap-8">
@@ -235,15 +235,15 @@ export default function Skills() {
     <section
       id="skills"
       aria-labelledby="skills-heading"
-      className="py-24 md:py-32 relative overflow-hidden bg-[#06080E]"
+      className="py-10 md:py-14 lg:py-16 relative overflow-hidden bg-[#06080E]"
     >
       {/* ── Seamless Boundary Blends (Top & Bottom) ── */}
       <div
-        className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
         aria-hidden="true"
       />
       <div
-        className="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
         aria-hidden="true"
       />
 
@@ -267,7 +267,7 @@ export default function Skills() {
 
       <div className="relative max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16">
         {/* ── Header row + Stats ──────────────────────────────────────────── */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-10 sm:mb-12">
 
           {/* Left: eyebrow label + heading */}
           <div className="flex flex-col gap-3">

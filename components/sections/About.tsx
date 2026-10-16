@@ -109,11 +109,11 @@ export default function About() {
 
       {/* ── Seamless Boundary Blends (Top & Bottom) ── */}
       <div
-        className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
         aria-hidden="true"
       />
       <div
-        className="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
         aria-hidden="true"
       />
 
@@ -205,7 +205,7 @@ export default function About() {
             with no clipping and flex-col justify-between.
           - Mobile (<lg): Natural fluid vertical scrolling.
          ══════════════════════════════════════════════════════════════ */}
-      <div className="relative w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12 lg:py-4 xl:py-6 lg:h-[calc(100svh-72px)] lg:min-h-[600px] lg:max-h-[960px] flex flex-col justify-between z-10">
+      <div className="relative w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-6 sm:py-8 lg:py-4 xl:py-6 lg:h-[calc(100svh-72px)] lg:min-h-[580px] lg:max-h-[820px] flex flex-col justify-between z-10">
         
         {/* ── TOP SECTION HEADER / PILL BADGE ── */}
         <div className="flex items-center justify-between pb-2.5 sm:pb-3 shrink-0">

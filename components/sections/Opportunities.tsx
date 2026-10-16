@@ -44,9 +44,19 @@ export default function Opportunities() {
   return (
     <section
       id="opportunities"
-      className="py-24 md:py-32 relative overflow-hidden bg-[#06080E]"
+      className="py-10 md:py-14 lg:py-16 relative overflow-hidden bg-[#06080E]"
       aria-labelledby="opportunities-heading"
     >
+      {/* ── Seamless Boundary Blends (Top & Bottom) ── */}
+      <div
+        className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        aria-hidden="true"
+      />
+
       {/* Seamless Ambient Lighting */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute top-1/3 right-10 w-[550px] h-[550px] rounded-full bg-[#22D3EE]/08 blur-[140px]" />
@@ -67,7 +77,7 @@ export default function Opportunities() {
           initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: EASE }}
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16"
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10 sm:mb-12"
         >
           <div>
             <div className="flex items-center gap-3 mb-3">

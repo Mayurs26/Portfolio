@@ -323,11 +323,11 @@ export default function PhoneShowcase() {
 
       {/* ── Seamless Boundary Blends (Top & Bottom) ── */}
       <div
-        className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
         aria-hidden="true"
       />
       <div
-        className="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
+        className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
         aria-hidden="true"
       />
 
@@ -444,7 +444,7 @@ export default function PhoneShowcase() {
       {/* ══════════════════════════════════════════════════════════════
           MAIN CONTENT CONTAINER (VIEWPORT-FITTED ON DESKTOP)
          ══════════════════════════════════════════════════════════════ */}
-      <div className="relative w-full max-w-[1480px] mx-auto px-4 sm:px-8 lg:px-12 py-5 sm:py-6 lg:py-8 lg:h-[calc(100svh-72px)] min-h-[660px] flex flex-col justify-between z-10">
+      <div className="relative w-full max-w-[1480px] mx-auto px-4 sm:px-8 lg:px-12 py-5 sm:py-6 lg:py-8 lg:h-[calc(100svh-72px)] min-h-[660px] lg:max-h-[840px] flex flex-col justify-between z-10">
         
         {/* ── TOP HEADER BAR: PROJECT CONTROLS ── */}
         <div className="flex items-center justify-between gap-4 shrink-0 pb-2 sm:pb-3">

@@ -152,7 +152,7 @@ export default function Hero() {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full min-h-screen lg:h-screen lg:max-h-[960px] flex flex-col justify-center items-center overflow-hidden bg-[#06080E] text-[#F8FAFC] select-none"
+      className="relative w-full min-h-screen lg:h-screen lg:max-h-[860px] flex flex-col justify-center items-center overflow-hidden bg-[#06080E] text-[#F8FAFC] select-none"
       aria-labelledby="hero-name"
     >
       {/* ══════════════════════════════════════════════════════════════
@@ -264,7 +264,7 @@ export default function Hero() {
 
       {/* ── Seamless Bottom Fade into Featured Projects ── */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent via-[#06080E]/80 to-[#06080E] pointer-events-none z-[5]"
+        className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent via-[#06080E]/80 to-[#06080E] pointer-events-none z-[5]"
         aria-hidden="true"
       />
 
