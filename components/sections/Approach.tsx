@@ -209,17 +209,19 @@ export default function Approach() {
   return (
     <section
       aria-labelledby="approach-heading"
-      className="relative w-full px-6 py-24 md:px-12 md:py-32 lg:px-24 overflow-hidden"
-      style={{
-        background:
-          'radial-gradient(ellipse 90% 70% at 50% 35%, #0F172A 0%, #0A0E18 60%, #07090E 100%)',
-      }}
+      className="relative w-full px-6 py-24 md:px-12 md:py-32 lg:px-24 overflow-hidden bg-[#06080E]"
     >
-      {/* Background ambient lighting & circuit grid */}
+      {/* Seamless Ambient Lighting */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full glow-cyan opacity-20 blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-[450px] h-[450px] rounded-full glow-amber opacity-15 blur-3xl" />
-        <div className="absolute inset-0 circuit-grid opacity-35" />
+        <div className="absolute top-1/4 left-10 w-[550px] h-[550px] rounded-full bg-[#00F0FF]/08 blur-[140px]" />
+        <div className="absolute bottom-10 right-10 w-[500px] h-[500px] rounded-full bg-[#A855F7]/06 blur-[140px]" />
+        <div
+          className="absolute inset-0 circuit-grid opacity-20"
+          style={{
+            maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+          }}
+        />
       </div>
 
       <div className="relative max-w-screen-xl mx-auto">

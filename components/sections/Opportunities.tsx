@@ -44,18 +44,20 @@ export default function Opportunities() {
   return (
     <section
       id="opportunities"
-      className="py-24 md:py-32 relative overflow-hidden"
-      style={{
-        background:
-          'radial-gradient(ellipse 90% 70% at 70% 30%, #0F172A 0%, #0A0E18 60%, #07090E 100%)',
-      }}
+      className="py-24 md:py-32 relative overflow-hidden bg-[#06080E]"
       aria-labelledby="opportunities-heading"
     >
-      {/* Background ambient lighting */}
+      {/* Seamless Ambient Lighting */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute top-1/2 right-1/4 w-[500px] h-[500px] rounded-full glow-cyan opacity-20 blur-3xl" />
-        <div className="absolute bottom-0 left-10 w-[450px] h-[450px] rounded-full glow-amber opacity-15 blur-3xl" />
-        <div className="absolute inset-0 circuit-grid opacity-35" />
+        <div className="absolute top-1/3 right-10 w-[550px] h-[550px] rounded-full bg-[#22D3EE]/08 blur-[140px]" />
+        <div className="absolute bottom-0 left-10 w-[500px] h-[500px] rounded-full bg-[#F59E0B]/06 blur-[140px]" />
+        <div
+          className="absolute inset-0 circuit-grid opacity-20"
+          style={{
+            maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+          }}
+        />
       </div>
 
       <div className="relative max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16">

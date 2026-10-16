@@ -235,36 +235,24 @@ export default function Skills() {
     <section
       id="skills"
       aria-labelledby="skills-heading"
-      className="py-24 md:py-32 relative overflow-hidden"
-      style={{
-        background:
-          'radial-gradient(ellipse 90% 70% at 50% 30%, #0F172A 0%, #0A0E18 60%, #07090E 100%)',
-      }}
+      className="py-24 md:py-32 relative overflow-hidden bg-[#06080E]"
     >
-      {/* Background glow: top-right (cyan) */}
+      {/* Seamless Ambient Lighting */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full opacity-25"
-        style={{
-          background:
-            'radial-gradient(circle at center, #22D3EE 0%, transparent 70%)',
-        }}
+        className="pointer-events-none absolute -top-20 -right-20 w-[500px] h-[500px] rounded-full bg-[#00F0FF]/08 blur-[140px]"
       />
-
-      {/* Background glow: bottom-left (amber) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-32 -left-32 w-[450px] h-[450px] rounded-full opacity-20"
-        style={{
-          background:
-            'radial-gradient(circle at center, #F59E0B 0%, transparent 70%)',
-        }}
+        className="pointer-events-none absolute -bottom-20 -left-20 w-[450px] h-[450px] rounded-full bg-[#F59E0B]/06 blur-[140px]"
       />
-
-      {/* Circuit Grid */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 circuit-grid opacity-35"
+        className="pointer-events-none absolute inset-0 circuit-grid opacity-20"
+        style={{
+          maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+        }}
       />
 
       <div className="relative max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16">

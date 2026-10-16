@@ -152,7 +152,7 @@ export default function Hero() {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full min-h-screen lg:h-screen lg:max-h-[960px] flex flex-col justify-center items-center overflow-hidden bg-[#06070B] text-[#F8FAFC] select-none"
+      className="relative w-full min-h-screen lg:h-screen lg:max-h-[960px] flex flex-col justify-center items-center overflow-hidden bg-[#06080E] text-[#F8FAFC] select-none"
       aria-labelledby="hero-name"
     >
       {/* ══════════════════════════════════════════════════════════════
@@ -254,6 +254,12 @@ export default function Hero() {
               style={{ left: '80.7%', top: '75.9%', animationDuration: '2.5s' }}
             />
           </div>
+
+          {/* Seamless bottom blend into next section */}
+          <div
+            className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-[#06080E]/70 to-[#06080E] pointer-events-none z-[4]"
+            aria-hidden="true"
+          />
         </div>
       </div>
 

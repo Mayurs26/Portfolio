@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <Navigation />
-      <main id="main-content" className="bg-[#07090E]">
+      <main id="main-content" className="relative bg-[#06080E] text-[#F8FAFC]">
         {/* Cinematic 3D hero with animated name reveal & 3D character */}
         <Hero />
         
@@ -21,27 +21,21 @@ export default function Home() {
         <PhoneShowcase />
         
         {/* All-projects grid with 3D tilt cards */}
-        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" aria-hidden="true" />
         <ProjectGrid />
         
         {/* Technical skills */}
-        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" aria-hidden="true" />
         <Skills />
         
         {/* About section */}
-        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" aria-hidden="true" />
         <About />
         
         {/* Development approach */}
-        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" aria-hidden="true" />
         <Approach />
         
         {/* Opportunities */}
-        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" aria-hidden="true" />
         <Opportunities />
         
         {/* Contact */}
-        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" aria-hidden="true" />
         <Contact />
       </main>
       <Footer />

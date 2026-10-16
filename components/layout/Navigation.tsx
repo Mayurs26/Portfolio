@@ -87,7 +87,7 @@ export default function Navigation() {
         transition={{ duration: 0.6, ease: EASE }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-[#06070B]/85 backdrop-blur-xl border-b border-white/10 shadow-xl shadow-black/50'
+            ? 'bg-[#06080E]/85 backdrop-blur-xl border-b border-white/5 shadow-xl shadow-black/50'
             : 'bg-transparent'
         }`}
       >

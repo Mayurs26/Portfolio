@@ -85,10 +85,10 @@ export default function SmartWaterReminderPage() {
       <Navigation />
       <main
         id="main-content"
-        className="relative min-h-screen text-[#F8FAFC] pt-24 pb-20 overflow-hidden bg-[#07090E]"
+        className="relative min-h-screen text-[#F8FAFC] pt-24 pb-20 overflow-hidden bg-[#06080E]"
         style={{
           background:
-            'radial-gradient(ellipse 90% 60% at 50% 0%, #0F172A 0%, #0B1120 45%, #07090E 85%)',
+            'radial-gradient(ellipse 90% 60% at 50% 0%, #0F172A 0%, #0B1120 45%, #06080E 85%)',
         }}
       >
         {/* ── Background Atmospheric Effects ── */}

@@ -26,18 +26,20 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="py-24 md:py-32 lg:py-40 relative overflow-hidden"
-      style={{
-        background:
-          'radial-gradient(ellipse 90% 70% at 50% 50%, #0F172A 0%, #0A0E18 65%, #07090E 100%)',
-      }}
+      className="py-24 md:py-32 lg:py-40 relative overflow-hidden bg-[#06080E]"
       aria-labelledby="contact-heading"
     >
-      {/* Atmospheric background glows */}
+      {/* Seamless Ambient Lighting */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute bottom-0 left-0 w-[550px] h-[550px] glow-cyan opacity-25 blur-3xl -translate-x-1/3 translate-y-1/3" />
-        <div className="absolute top-0 right-0 w-[450px] h-[450px] glow-amber opacity-20 blur-3xl translate-x-1/3 -translate-y-1/3" />
-        <div className="absolute inset-0 circuit-grid opacity-35" />
+        <div className="absolute bottom-0 left-0 w-[550px] h-[550px] rounded-full bg-[#22D3EE]/09 blur-[140px] -translate-x-1/4" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-[#F59E0B]/07 blur-[140px] translate-x-1/4" />
+        <div
+          className="absolute inset-0 circuit-grid opacity-20"
+          style={{
+            maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+          }}
+        />
       </div>
 
       <div className="relative max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16">

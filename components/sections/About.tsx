@@ -112,7 +112,7 @@ export default function About() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(circle at 18% 30%, rgba(0, 240, 255, 0.12) 0%, transparent 45%), radial-gradient(circle at 82% 70%, rgba(249, 115, 22, 0.12) 0%, transparent 45%), radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 55%)',
+            'radial-gradient(circle at 18% 30%, rgba(0, 240, 255, 0.08) 0%, transparent 50%), radial-gradient(circle at 82% 70%, rgba(249, 115, 22, 0.07) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 60%)',
         }}
         aria-hidden="true"
       />

@@ -33,7 +33,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" data-scroll-behavior="smooth"
       className={`${playfair.variable} ${syne.variable} ${inter.variable} ${jetbrains.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#07090E] text-[#F8FAFC]">
+      <body className="min-h-full flex flex-col bg-[#06080E] text-[#F8FAFC]">
         {/* Schema.org Person structured data */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
           '@context': 'https://schema.org', '@type': 'Person',

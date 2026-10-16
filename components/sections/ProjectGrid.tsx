@@ -331,18 +331,20 @@ export default function ProjectGrid() {
   return (
     <section
       id="projects"
-      className="py-24 md:py-32 lg:py-40 relative overflow-hidden"
-      style={{
-        background:
-          'radial-gradient(ellipse 90% 65% at 50% 20%, #0F172A 0%, #0A0E18 60%, #07090E 100%)',
-      }}
+      className="py-24 md:py-32 lg:py-40 relative overflow-hidden bg-[#06080E]"
       aria-labelledby="projects-heading"
     >
-      {/* ── Background elements ── */}
+      {/* ── Seamless Ambient Lighting ── */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute top-1/4 left-0 w-[550px] h-[550px] rounded-full glow-cyan opacity-20 blur-3xl" />
-        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] rounded-full glow-amber opacity-15 blur-3xl" />
-        <div className="absolute inset-0 circuit-grid opacity-35" />
+        <div className="absolute top-1/4 -left-24 w-[550px] h-[550px] rounded-full bg-[#00F0FF]/08 blur-[140px]" />
+        <div className="absolute bottom-1/4 -right-24 w-[500px] h-[500px] rounded-full bg-[#F97316]/06 blur-[140px]" />
+        <div
+          className="absolute inset-0 circuit-grid opacity-20"
+          style={{
+            maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+          }}
+        />
       </div>
 
       <div className="relative max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16">

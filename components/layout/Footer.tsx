@@ -15,7 +15,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#05070B] border-t border-white/10 relative overflow-hidden">
+    <footer className="bg-[#06080E] relative overflow-hidden">
       {/* Ambient background glow */}
       <div
         className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-32 glow-cyan opacity-10 blur-3xl"

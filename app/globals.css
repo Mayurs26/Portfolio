@@ -3,7 +3,7 @@
 /* ─── Cyber Sunset / Digital Skyline Theme Tokens ───────────────── */
 :root {
   /* Deep Nocturnal Canvas */
-  --bg-dark:       #07090E;  /* Obsidian base */
+  --bg-dark:       #06080E;  /* Obsidian base */
   --bg-surface:    #0F172A;  /* Deep slate/navy surface */
   --bg-card:       #131D31;  /* Card base */
   --bg-elevated:   #1A253C;  /* Elevated panel */
@@ -24,7 +24,7 @@
   --olive-sage:    #1E293B;
   --warm-ivory:    #F8FAFC;
   --dusty-blue:    #22D3EE;
-  --near-black:    #07090E;
+  --near-black:    #06080E;
 }
 
 /* ─── Tailwind v4 theme ─────────────────────────────────────────── */
