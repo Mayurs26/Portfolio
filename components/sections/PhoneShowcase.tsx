@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import {
   ArrowRight,
@@ -21,11 +21,22 @@ import {
   Lock,
   Database,
   Target,
+  Play,
+  Pause,
+  RotateCcw,
+  RefreshCw,
+  Sparkles,
 } from 'lucide-react';
 import { GithubIcon, FlutterIcon, DartIcon } from '@/components/ui/BrandIcons';
 import { EASE } from '@/lib/motion';
 
 // ─── Project Data Interface ──────────────────────────────────────────
+interface ShowcaseScreen {
+  file: string;
+  label: string;
+  tag: string;
+}
+
 interface ShowcaseProject {
   id: string;
   counterNum: string;
@@ -39,11 +50,7 @@ interface ShowcaseProject {
   description: string;
   caseStudyUrl: string;
   githubUrl: string;
-  screens: {
-    left: { file: string; label: string };
-    center: { file: string; label: string };
-    right: { file: string; label: string };
-  };
+  screens: ShowcaseScreen[];
   features: {
     icon: typeof Droplets;
     iconColor: string;
@@ -79,20 +86,23 @@ const showcaseList: ShowcaseProject[] = [
       'A Flutter app to track daily hydration, set smart reminders, and build healthier habits with clean analytics and streak tracking.',
     caseStudyUrl: '/projects/smart-water-reminder',
     githubUrl: 'https://github.com/Mayurs26/Smart-Water-Reminder',
-    screens: {
-      left: {
+    screens: [
+      {
         file: '/screenshots/smart-water-reminder/Reminder.jpg',
         label: 'Smart Reminders Screen',
+        tag: '01 · REMINDERS',
       },
-      center: {
+      {
         file: '/screenshots/smart-water-reminder/Home Dashboard.jpg',
         label: 'Hydration Dashboard Screen',
+        tag: '02 · DASHBOARD',
       },
-      right: {
+      {
         file: '/screenshots/smart-water-reminder/Analytics.jpg',
         label: 'Visual Analytics Screen',
+        tag: '03 · ANALYTICS',
       },
-    },
+    ],
     features: [
       {
         icon: Droplets,
@@ -148,20 +158,23 @@ const showcaseList: ShowcaseProject[] = [
       'An offline-first Flutter expense tracker with ML Kit receipt OCR, Gemini AI financial assistant, and deep spending analytics powered by Drift SQLite.',
     caseStudyUrl: '/projects/ai-expense-scanner',
     githubUrl: 'https://github.com/Mayurs26/AI_Expense_Scanner',
-    screens: {
-      left: {
+    screens: [
+      {
         file: '/screenshots/ai-expense-tracker/AI Assistant (Gemini Chat).jpg',
         label: 'Gemini Copilot Screen',
+        tag: '01 · AI COPILOT',
       },
-      center: {
+      {
         file: '/screenshots/ai-expense-tracker/Dashboard.jpg',
         label: 'Expense Overview Screen',
+        tag: '02 · DASHBOARD',
       },
-      right: {
+      {
         file: '/screenshots/ai-expense-tracker/Analytics Dashboard.jpg',
         label: 'Spending Trends Screen',
+        tag: '03 · ANALYTICS',
       },
-    },
+    ],
     features: [
       {
         icon: Scan,
@@ -217,20 +230,23 @@ const showcaseList: ShowcaseProject[] = [
       'A full-stack hotel booking platform featuring a sleek Flutter mobile frontend and Django REST backend with JWT authentication and live booking workflows.',
     caseStudyUrl: 'https://github.com/Mayurs26/stayease-hotel-booking-app',
     githubUrl: 'https://github.com/Mayurs26/stayease-hotel-booking-app',
-    screens: {
-      left: {
+    screens: [
+      {
         file: '/screenshots/stayease/Sign In.jpg',
         label: 'JWT Authentication Screen',
+        tag: '01 · AUTH',
       },
-      center: {
+      {
         file: '/screenshots/stayease/Home screen.jpg',
         label: 'Hotel Discovery Screen',
+        tag: '02 · DISCOVERY',
       },
-      right: {
+      {
         file: '/screenshots/stayease/Bookings.jpg',
         label: 'My Reservations Screen',
+        tag: '03 · BOOKINGS',
       },
-    },
+    ],
     features: [
       {
         icon: Building2,
@@ -274,14 +290,250 @@ const showcaseList: ShowcaseProject[] = [
   },
 ];
 
+// ─── Modern 3D Smartphone Component ──────────────────────────────────
+interface ModernPhoneProps {
+  screen: ShowcaseScreen;
+  isCenter?: boolean;
+  isFlipped: boolean;
+  onFlip: () => void;
+  tiltAngle: number;
+  prefersReducedMotion: boolean | null;
+  mouse: { x: number; y: number };
+  phoneIndex: number;
+  projectTitle: string;
+}
+
+function ModernPhone({
+  screen,
+  isCenter = false,
+  isFlipped,
+  onFlip,
+  tiltAngle,
+  prefersReducedMotion,
+  mouse,
+  phoneIndex,
+  projectTitle,
+}: ModernPhoneProps) {
+  // Parallax translation calculations
+  const dynamicTiltY = prefersReducedMotion ? 0 : tiltAngle + mouse.x * (isCenter ? 4 : 7);
+  const dynamicTiltX = prefersReducedMotion ? 0 : -mouse.y * (isCenter ? 5 : 4);
+  const dynamicZ = isCenter ? 28 : (phoneIndex === 0 ? -mouse.x * 14 : mouse.x * 14);
+
+  return (
+    <div
+      onClick={onFlip}
+      className={`relative cursor-pointer transition-transform duration-300 group select-none ${
+        isCenter
+          ? 'w-[200px] sm:w-[230px] lg:w-[245px] xl:w-[260px] h-[430px] sm:h-[490px] lg:h-[520px] xl:h-[550px] z-20'
+          : 'w-[185px] sm:w-[210px] lg:w-[225px] xl:w-[238px] h-[395px] sm:h-[455px] lg:h-[485px] xl:h-[515px] z-10 opacity-90 hover:opacity-100 hover:z-30'
+      }`}
+      style={{
+        perspective: '1400px',
+      }}
+      title="Click to 3D flip phone"
+    >
+      {/* ── 3D Card Inner (Handles Flip & Perspective Angle) ── */}
+      <div
+        className="relative w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        style={{
+          transformStyle: 'preserve-3d',
+          transform: isFlipped
+            ? 'rotateY(180deg)'
+            : `rotateY(${dynamicTiltY}deg) rotateX(${dynamicTiltX}deg) translateZ(${dynamicZ}px)`,
+        }}
+      >
+        {/* ══════════════════════════════════════════════════════════════
+            FRONT FACE: Sleek Modern Flagship Smartphone Display
+           ══════════════════════════════════════════════════════════════ */}
+        <div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+          }}
+        >
+          {/* Outer Titanium Chassis */}
+          <div
+            className={`relative w-full h-full rounded-[38px] sm:rounded-[44px] p-2 sm:p-2.5 bg-gradient-to-b from-[#2E3C4E] via-[#16212E] to-[#0A1017] border-[2px] sm:border-[2.5px] transition-all duration-300 ${
+              isCenter
+                ? 'border-[#00F0FF]/80 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.98),0_0_45px_rgba(0,240,255,0.22)]'
+                : 'border-[#38BDF8]/40 group-hover:border-[#00F0FF]/60 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.95),0_0_30px_rgba(56,189,248,0.12)]'
+            }`}
+          >
+            {/* Subtle Chamfer Rim Light */}
+            <div className="absolute inset-0 rounded-[38px] sm:rounded-[44px] ring-1 ring-white/15 pointer-events-none" />
+
+            {/* Hardware Side Buttons */}
+            {/* Left: Volume Up / Down */}
+            <div className="absolute -left-[3.5px] top-24 w-1 h-7 rounded-l-xs bg-[#475569] border-l border-white/20" />
+            <div className="absolute -left-[3.5px] top-34 w-1 h-7 rounded-l-xs bg-[#475569] border-l border-white/20" />
+            {/* Right: Power / Action Button */}
+            <div className="absolute -right-[3.5px] top-28 w-1 h-11 rounded-r-xs bg-[#475569] border-r border-white/20" />
+
+            {/* Inner Curved OLED Screen Area */}
+            <div className="relative w-full h-full rounded-[30px] sm:rounded-[36px] overflow-hidden bg-black flex flex-col justify-between shadow-inner">
+              {/* Top Dynamic Island & Status Bar */}
+              <div className="relative z-30 px-3.5 pt-2 pb-1 flex items-center justify-between bg-black/70 backdrop-blur-xs select-none">
+                {/* Clock */}
+                <span className="font-[family-name:var(--font-jetbrains)] text-[8px] sm:text-[9px] text-white/90 font-bold tracking-tight">
+                  9:41
+                </span>
+
+                {/* Dynamic Island Pill with Camera & Sensor */}
+                <div className="w-14 sm:w-16 h-3 sm:h-3.5 rounded-full bg-black/95 border border-white/15 shadow-inner flex items-center justify-between px-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF]/60 border border-[#00F0FF] shadow-[0_0_5px_#00F0FF]" />
+                  <span className="w-1 h-1 rounded-full bg-white/20" />
+                </div>
+
+                {/* Status Icons: 5G & Battery */}
+                <div className="flex items-center gap-1.5">
+                  <span className="font-[family-name:var(--font-jetbrains)] text-[7px] text-white/70 font-semibold">
+                    5G
+                  </span>
+                  <div className="w-3.5 h-1.5 rounded-xs border border-white/70 p-[1px] flex items-center">
+                    <div className="w-2 h-full bg-[#00F0FF] rounded-2xs" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Screenshot Display with Smooth Animated Transition */}
+              <div className="relative flex-1 w-full overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={screen.file}
+                    initial={{ opacity: 0, scale: 0.94 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.94 }}
+                    transition={{ duration: 0.4, ease: EASE }}
+                    className="relative w-full h-full"
+                  >
+                    <Image
+                      src={screen.file}
+                      alt={screen.label}
+                      fill
+                      priority
+                      sizes="(max-width: 640px) 210px, 280px"
+                      className="object-cover object-top"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Specular Diagonal Glass Sheen */}
+                <div
+                  className="absolute inset-0 pointer-events-none z-20"
+                  style={{
+                    background:
+                      'linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.02) 28%, transparent 55%)',
+                  }}
+                />
+              </div>
+
+              {/* Bottom Home Indicator Bar */}
+              <div className="relative z-30 pb-2 pt-1 flex justify-center bg-gradient-to-t from-black/80 to-transparent">
+                <div className="w-20 sm:w-24 h-1 rounded-full bg-white/40 shadow-xs" />
+              </div>
+            </div>
+          </div>
+
+          {/* Under-Phone Screen Tag Badge */}
+          <div className="flex items-center justify-center mt-3">
+            <span
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9.5px] sm:text-[10.5px] font-[family-name:var(--font-jetbrains)] font-bold tracking-[0.16em] uppercase backdrop-blur-md transition-all duration-300 ${
+                isCenter
+                  ? 'bg-[#00F0FF]/15 border border-[#00F0FF]/50 text-[#00F0FF] shadow-[0_0_12px_rgba(0,240,255,0.3)]'
+                  : 'bg-[#0D151E]/90 border border-white/10 text-white/60 group-hover:text-white/90'
+              }`}
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  isCenter ? 'bg-[#00F0FF] shadow-[0_0_6px_#00F0FF] animate-pulse' : 'bg-white/40'
+                }`}
+              />
+              <span>{screen.tag}</span>
+            </span>
+          </div>
+        </div>
+
+        {/* ══════════════════════════════════════════════════════════════
+            BACK FACE: 3D Titanium Chassis & Architecture Specs
+           ══════════════════════════════════════════════════════════════ */}
+        <div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
+          }}
+        >
+          <div className="relative w-full h-full rounded-[38px] sm:rounded-[44px] p-4 sm:p-5 bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#080D14] border-[2px] sm:border-[2.5px] border-[#38BDF8]/50 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.98),0_0_40px_rgba(249,115,22,0.18)] flex flex-col justify-between select-none">
+            {/* Top Triple Sapphire Camera Bump */}
+            <div className="flex items-start justify-between">
+              <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl bg-[#16212E]/90 border border-white/20 p-2 shadow-lg grid grid-cols-2 gap-1.5 items-center justify-items-center">
+                <div className="w-5 sm:w-6 h-5 sm:h-6 rounded-full bg-slate-900 border border-slate-600 flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-[#00F0FF]/40 border border-[#00F0FF]" />
+                </div>
+                <div className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]/80 shadow-[0_0_6px_#F59E0B]" />
+                <div className="w-5 sm:w-6 h-5 sm:h-6 rounded-full bg-slate-900 border border-slate-600 flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-[#00F0FF]/40 border border-[#00F0FF]" />
+                </div>
+                <div className="w-3.5 h-3.5 rounded-full bg-black/90 border border-white/20" />
+              </div>
+
+              {/* Minimalist 3D Chip Badge */}
+              <div className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] font-[family-name:var(--font-jetbrains)] text-white/70">
+                PRO 3D
+              </div>
+            </div>
+
+            {/* Center Monogram & Specs */}
+            <div className="flex flex-col items-center text-center my-auto">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#00F0FF]/20 to-[#F97316]/20 border border-white/20 flex items-center justify-center mb-3 shadow-md">
+                <FlutterIcon size={24} />
+              </div>
+              <h4 className="font-[family-name:var(--font-syne)] font-bold text-sm text-white mb-1">
+                {projectTitle}
+              </h4>
+              <p className="font-[family-name:var(--font-jetbrains)] text-[10px] text-[#00F0FF] uppercase tracking-widest font-semibold mb-3">
+                FLUTTER · 60 FPS
+              </p>
+
+              <div className="space-y-1.5 text-[10px] font-[family-name:var(--font-inter)] text-white/60">
+                <p>• Clean Architecture</p>
+                <p>• Offline-First SQLite</p>
+                <p>• Hardware Accel 3D</p>
+              </div>
+            </div>
+
+            {/* Bottom Flip Back Button */}
+            <div className="flex justify-center pt-2 border-t border-white/10">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-[10px] font-[family-name:var(--font-jetbrains)] text-white/80 transition-colors">
+                <RotateCcw size={11} className="text-[#00F0FF]" />
+                <span>Click to Flip Back</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main PhoneShowcase Section ──────────────────────────────────────
 export default function PhoneShowcase() {
   const prefersReducedMotion = useReducedMotion();
   const [activeProjectIdx, setActiveProjectIdx] = useState(0);
   const project = showcaseList[activeProjectIdx];
 
-  // Mouse tilt tracking
+  // Mouse tilt tracking for dynamic parallax
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const stageRef = useRef<HTMLDivElement>(null);
+
+  // 3-second auto cycle timer & interactive state
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const [progress, setProgress] = useState(0); // 0 to 100%
+  const [screenShift, setScreenShift] = useState(0); // 0, 1, 2
+  const [flippedState, setFlippedState] = useState([false, false, false]);
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -296,31 +548,79 @@ export default function PhoneShowcase() {
 
   const handleMouseLeave = useCallback(() => {
     setMouse({ x: 0, y: 0 });
+    setIsHovered(false);
   }, []);
+
+  const rotateScreens = useCallback(() => {
+    setScreenShift((prev) => (prev + 1) % 3);
+    setProgress(0);
+  }, []);
+
+  const toggleFlipAll = useCallback(() => {
+    setFlippedState((prev) => {
+      const anyFlipped = prev.some((f) => f);
+      return prev.map(() => !anyFlipped);
+    });
+  }, []);
+
+  const toggleFlipSingle = useCallback((idx: number) => {
+    setFlippedState((prev) => {
+      const next = [...prev];
+      next[idx] = !next[idx];
+      return next;
+    });
+  }, []);
+
+  // 3-Second Automatic Screen Change Interval
+  useEffect(() => {
+    if (prefersReducedMotion || !isAutoPlaying || isHovered) return;
+
+    const intervalDuration = 3000; // 3 seconds
+    const tickRate = 50; // update progress every 50ms
+    const step = (tickRate / intervalDuration) * 100;
+
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev + step >= 100) {
+          setScreenShift((s) => {
+            const nextShift = (s + 1) % 3;
+            // After 3 screen shifts (9s on current project), optionally advance project
+            if (nextShift === 0) {
+              setActiveProjectIdx((p) => (p + 1) % showcaseList.length);
+            }
+            return nextShift;
+          });
+          return 0;
+        }
+        return prev + step;
+      });
+    }, tickRate);
+
+    return () => clearInterval(timer);
+  }, [prefersReducedMotion, isAutoPlaying, isHovered]);
 
   const nextProject = () => {
     setActiveProjectIdx((prev) => (prev + 1) % showcaseList.length);
+    setScreenShift(0);
+    setProgress(0);
   };
 
   const prevProject = () => {
     setActiveProjectIdx((prev) => (prev - 1 + showcaseList.length) % showcaseList.length);
+    setScreenShift(0);
+    setProgress(0);
   };
+
+  // Resolve current screens based on shift offset (Left, Center, Right)
+  const leftScreen = project.screens[(screenShift + 0) % 3];
+  const centerScreen = project.screens[(screenShift + 1) % 3];
+  const rightScreen = project.screens[(screenShift + 2) % 3];
 
   return (
     <section
       id="featured"
-      className="relative w-full bg-[#06080E] text-[#F8FAFC] overflow-hidden select-none"
+      className="relative w-full bg-[#06080E] text-[#F8FAFC] overflow-hidden select-none py-10 md:py-14 lg:py-16"
     >
-      {/* ══════════════════════════════════════════════════════════════
-          BACKGROUND LIGHTING & FLOATING 3D SHAPES (EXACT FROM MOCKUP)
-          - Warm amber glow on bottom-left
-          - Cool cyan glow behind center phones
-          - Floating Cyan 3D Hexagon on top-left
-          - Floating Burgundy Torus / Ring on top-right
-          - Floating Purple Prism on lower-right
-          - Floating Micro Confetti Cubes (magenta, cyan, amber)
-         ══════════════════════════════════════════════════════════════ */}
-
       {/* ── Seamless Boundary Blends (Top & Bottom) ── */}
       <div
         className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#06080E] via-[#06080E]/75 to-transparent pointer-events-none z-[5]"
@@ -340,114 +640,36 @@ export default function PhoneShowcase() {
         }}
       />
 
-      {/* ── 1. Floating Cyan 3D Hexagon (Top-Left behind title) ── */}
+      {/* ── Floating 3D Geometric Accents ── */}
       <div
-        className="absolute top-12 sm:top-16 left-[22%] sm:left-[26%] pointer-events-none z-0 transition-transform duration-300"
+        className="absolute top-12 left-[18%] pointer-events-none z-0 transition-transform duration-300"
         style={{
           transform: prefersReducedMotion
             ? undefined
             : `translate(${mouse.x * -18}px, ${mouse.y * -14}px)`,
         }}
       >
-        <svg
-          className="w-24 sm:w-36 lg:w-44 h-24 sm:h-36 lg:h-44 opacity-35 blur-[0.5px]"
-          viewBox="0 0 120 120"
-          fill="none"
-        >
-          <defs>
-            <linearGradient id="cyanHexTop" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#00F0FF" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="#0284C7" stopOpacity="0.45" />
-            </linearGradient>
-            <linearGradient id="cyanHexLeft" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#0EA5E9" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#0369A1" stopOpacity="0.25" />
-            </linearGradient>
-            <linearGradient id="cyanHexRight" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.75" />
-              <stop offset="100%" stopColor="#0284C7" stopOpacity="0.3" />
-            </linearGradient>
-          </defs>
-          <polygon points="60,10 105,35 60,60 15,35" fill="url(#cyanHexTop)" />
-          <polygon points="15,35 60,60 60,110 15,85" fill="url(#cyanHexLeft)" />
-          <polygon points="105,35 60,60 60,110 105,85" fill="url(#cyanHexRight)" />
-        </svg>
+        <div className="w-28 h-28 rounded-full border border-cyan-500/20 blur-[1px] opacity-40 animate-pulse" />
       </div>
 
-      {/* ── 2. Floating Burgundy 3D Torus / Ring (Top-Right) ── */}
       <div
-        className="absolute top-6 sm:top-8 right-[12%] sm:right-[15%] pointer-events-none z-0 transition-transform duration-300"
-        style={{
-          transform: prefersReducedMotion
-            ? undefined
-            : `translate(${mouse.x * 16}px, ${mouse.y * -12}px)`,
-        }}
-      >
-        <div className="w-36 sm:w-48 lg:w-56 h-36 sm:h-48 lg:h-56 rounded-full border-[18px] sm:border-[24px] border-[#6B1728]/35 shadow-[0_0_40px_rgba(107,23,40,0.3)] opacity-40 blur-[0.5px]" />
-      </div>
-
-      {/* ── 3. Floating Purple 3D Prism / Diamond (Lower-Right) ── */}
-      <div
-        className="absolute bottom-16 sm:bottom-20 right-[15%] sm:right-[18%] pointer-events-none z-0 transition-transform duration-300"
+        className="absolute bottom-16 right-[15%] pointer-events-none z-0 transition-transform duration-300"
         style={{
           transform: prefersReducedMotion
             ? undefined
             : `translate(${mouse.x * 14}px, ${mouse.y * 14}px)`,
         }}
       >
-        <svg
-          className="w-16 sm:w-24 lg:w-28 h-20 sm:h-28 lg:h-32 opacity-40 blur-[0.5px]"
-          viewBox="0 0 80 100"
-          fill="none"
-        >
-          <defs>
-            <linearGradient id="purplePrism1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#C084FC" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#7E22CE" stopOpacity="0.4" />
-            </linearGradient>
-            <linearGradient id="purplePrism2" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#9333EA" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#581C87" stopOpacity="0.25" />
-            </linearGradient>
-          </defs>
-          <polygon points="40,5 75,50 40,95" fill="url(#purplePrism1)" />
-          <polygon points="40,5 5,50 40,95" fill="url(#purplePrism2)" />
-        </svg>
+        <div className="w-32 h-32 rounded-full border border-purple-500/20 blur-[1px] opacity-35" />
       </div>
 
-      {/* ── 4. Floating Micro Confetti Cubes (Magenta, Cyan, Amber) ── */}
-      <div
-        className="absolute top-14 left-[18%] w-3 h-3 bg-[#EC4899] rotate-12 shadow-[0_0_10px_#EC4899] opacity-75 pointer-events-none z-0"
-        style={{
-          transform: prefersReducedMotion ? undefined : `translate(${mouse.x * -10}px, ${mouse.y * -8}px)`,
-        }}
-      />
-      <div
-        className="absolute top-10 right-[35%] w-2.5 h-2.5 bg-[#F59E0B] rotate-45 shadow-[0_0_8px_#F59E0B] opacity-70 pointer-events-none z-0"
-        style={{
-          transform: prefersReducedMotion ? undefined : `translate(${mouse.x * 8}px, ${mouse.y * -6}px)`,
-        }}
-      />
-      <div
-        className="absolute top-20 right-[22%] w-3 h-3 bg-[#00F0FF] -rotate-6 shadow-[0_0_10px_#00F0FF] opacity-75 pointer-events-none z-0"
-        style={{
-          transform: prefersReducedMotion ? undefined : `translate(${mouse.x * 12}px, ${mouse.y * 10}px)`,
-        }}
-      />
-      <div
-        className="absolute bottom-24 left-[30%] w-2 h-2 bg-[#F59E0B] rotate-12 shadow-[0_0_6px_#F59E0B] opacity-65 pointer-events-none z-0"
-      />
-      <div
-        className="absolute bottom-16 right-[28%] w-2.5 h-2.5 bg-[#EC4899] rotate-45 shadow-[0_0_8px_#EC4899] opacity-70 pointer-events-none z-0"
-      />
-
       {/* ══════════════════════════════════════════════════════════════
-          MAIN CONTENT CONTAINER (VIEWPORT-FITTED ON DESKTOP)
+          MAIN CONTENT CONTAINER
          ══════════════════════════════════════════════════════════════ */}
-      <div className="relative w-full max-w-[1480px] mx-auto px-4 sm:px-8 lg:px-12 py-5 sm:py-6 lg:py-8 lg:h-[calc(100svh-72px)] min-h-[660px] lg:max-h-[840px] flex flex-col justify-between z-10">
+      <div className="relative w-full max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-10 flex flex-col justify-between z-10">
         
-        {/* ── TOP HEADER BAR: PROJECT CONTROLS ── */}
-        <div className="flex items-center justify-between gap-4 shrink-0 pb-2 sm:pb-3">
+        {/* ── TOP HEADER BAR: PROJECT CONTROLS & 3S PROGRESS ── */}
+        <div className="flex flex-wrap items-center justify-between gap-4 shrink-0 pb-4 border-b border-white/5">
           {/* Left: • FEATURED PROJECTS */}
           <div className="flex items-center gap-2.5">
             <span className="w-2 h-2 rounded-full bg-[#00F0FF] shadow-[0_0_10px_#00F0FF]" />
@@ -456,15 +678,68 @@ export default function PhoneShowcase() {
             </span>
           </div>
 
-          {/* Right: Project Selector Capsule + Circular Arrows */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden sm:flex items-center gap-1 p-1 rounded-full bg-[#0C121A]/90 border border-white/10 backdrop-blur-md">
+          {/* Center/Right: 3s Auto-Cycle Tracker + Project Tabs + Navigation Arrows */}
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5">
+            {/* 3-Second Auto-Cycle Controller */}
+            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#0C121A]/90 border border-white/10 backdrop-blur-md shadow-sm">
+              <button
+                onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+                className="text-[#00F0FF] hover:text-white transition-colors p-0.5"
+                aria-label={isAutoPlaying ? 'Pause 3s auto cycle' : 'Play 3s auto cycle'}
+                title={isAutoPlaying ? 'Pause 3s cycle' : 'Play 3s cycle'}
+              >
+                {isAutoPlaying ? <Pause size={13} /> : <Play size={13} />}
+              </button>
+
+              <div className="flex items-center gap-2">
+                <div className="w-14 sm:w-20 h-1.5 rounded-full bg-white/10 overflow-hidden relative">
+                  <div
+                    className="h-full bg-gradient-to-r from-[#00F0FF] to-[#38BDF8] rounded-full transition-all duration-75 shadow-[0_0_8px_#00F0FF]"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+                <span className="font-[family-name:var(--font-jetbrains)] text-[10px] text-white/70 font-semibold">
+                  3s
+                </span>
+              </div>
+
+              {/* 3D Round / Rotate Screens Quick Button */}
+              <button
+                onClick={rotateScreens}
+                className="flex items-center gap-1 pl-2 border-l border-white/10 text-white/70 hover:text-[#00F0FF] transition-colors"
+                title="Rotate Screens (3D Round)"
+              >
+                <RefreshCw size={11} className="hover:rotate-180 transition-transform duration-500" />
+                <span className="hidden sm:inline font-[family-name:var(--font-jetbrains)] text-[10px] uppercase font-bold tracking-wider">
+                  Rotate
+                </span>
+              </button>
+
+              {/* 3D Flip All Phones Toggle */}
+              <button
+                onClick={toggleFlipAll}
+                className="flex items-center gap-1 pl-2 border-l border-white/10 text-white/70 hover:text-[#F97316] transition-colors"
+                title="Flip All Phones in 3D"
+              >
+                <RotateCcw size={11} />
+                <span className="hidden sm:inline font-[family-name:var(--font-jetbrains)] text-[10px] uppercase font-bold tracking-wider">
+                  Flip 3D
+                </span>
+              </button>
+            </div>
+
+            {/* Project Selector Tabs */}
+            <div className="hidden md:flex items-center gap-1 p-1 rounded-full bg-[#0C121A]/90 border border-white/10 backdrop-blur-md">
               {showcaseList.map((item, idx) => {
                 const isActive = activeProjectIdx === idx;
                 return (
                   <button
                     key={item.id}
-                    onClick={() => setActiveProjectIdx(idx)}
+                    onClick={() => {
+                      setActiveProjectIdx(idx);
+                      setScreenShift(0);
+                      setProgress(0);
+                    }}
                     className={`px-3.5 py-1.5 rounded-full text-xs font-semibold font-[family-name:var(--font-syne)] transition-all duration-300 ${
                       isActive
                         ? 'bg-gradient-to-r from-[#00F0FF] to-[#38BDF8] text-[#060B12] font-bold shadow-md shadow-cyan-500/25 scale-[1.02]'
@@ -477,7 +752,7 @@ export default function PhoneShowcase() {
               })}
             </div>
 
-            {/* Circular Carousel Arrows */}
+            {/* Circular Carousel Prev/Next Arrows */}
             <div className="flex items-center gap-1.5">
               <button
                 onClick={prevProject}
@@ -498,21 +773,21 @@ export default function PhoneShowcase() {
         </div>
 
         {/* ══════════════════════════════════════════════════════════════
-            MAIN 3-COLUMN SHOWCASE (EXACT MATCH TO REFERENCE IMAGE)
-            - Column 1: Counter, Category Badge, Gradient Title, Scribble, Description, Buttons
-            - Column 2: 3 Angled 3D Smartphone Mockups (Left, Center Dominant, Right)
-            - Column 3: 3 Connected Vertical Feature Callouts
+            MAIN SHOWCASE GRID:
+            - Column 1 (Left): Project Details, Gradient Title, Description, Buttons
+            - Column 2 (Center): 3 BIG, SEPARATED, MODERN 3D PHONES (NO OVERLAP)
+            - Column 3 (Right): Connected Feature Callouts & 3D Flip Quick Control
            ══════════════════════════════════════════════════════════════ */}
         <div
           ref={stageRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="relative flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-4 xl:gap-8 items-center py-2 sm:py-3"
+          className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 xl:gap-8 items-center py-6 sm:py-8"
         >
           {/* ────────────────────────────────────────────────────────────
               COLUMN 1 (LEFT): Counter, Badge, Editorial Gradient Title, CTAs
              ──────────────────────────────────────────────────────────── */}
-          <div className="lg:col-span-4 xl:col-span-4 flex flex-col justify-center z-20">
+          <div className="lg:col-span-3 xl:col-span-3 flex flex-col justify-center z-20">
             <AnimatePresence mode="wait">
               <motion.div
                 key={project.id + '-left'}
@@ -522,44 +797,41 @@ export default function PhoneShowcase() {
                 transition={{ duration: 0.4, ease: EASE }}
                 className="flex flex-col"
               >
-                {/* Counter & Progress Track Row: 01 / 03 ──── */}
-                <div className="flex items-center gap-2.5 mb-3.5">
+                {/* Counter Row: 01 / 03 ──── */}
+                <div className="flex items-center gap-2.5 mb-3">
                   <span className="font-[family-name:var(--font-jetbrains)] text-xs font-bold text-white/90">
                     {project.counterNum}
                   </span>
                   <span className="font-[family-name:var(--font-jetbrains)] text-xs text-white/40">
                     / 03
                   </span>
-                  {/* Cyan progress bar track from mockup */}
                   <div className="flex items-center ml-2">
                     <span className="w-14 h-[3px] rounded-full bg-gradient-to-r from-[#00F0FF] to-[#38BDF8] shadow-[0_0_8px_rgba(0,240,255,0.6)]" />
-                    <span className="w-16 h-[3px] rounded-full bg-white/10" />
+                    <span className="w-14 h-[3px] rounded-full bg-white/10" />
                   </div>
                 </div>
 
-                {/* Category Pill Badge: • FLUTTER APP */}
-                <div className="mb-3.5">
+                {/* Category Badge */}
+                <div className="mb-3">
                   <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0D151E]/90 border border-white/10 text-[10.5px] font-[family-name:var(--font-jetbrains)] font-bold text-white/90 tracking-[0.16em] uppercase backdrop-blur-md">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF] shadow-[0_0_6px_#00F0FF]" />
                     <span>{project.category}</span>
                   </span>
                 </div>
 
-                {/* Editorial Title with Multi-Color Gradient on Line 2 (Exact from Mockup) */}
-                <h2 className="font-[family-name:var(--font-syne)] font-extrabold text-[clamp(2.6rem,4.6vw,4.6rem)] leading-[0.94] tracking-tight text-white mb-2">
+                {/* Editorial Title with Multi-Color Gradient */}
+                <h2 className="font-[family-name:var(--font-syne)] font-extrabold text-[clamp(2.3rem,4vw,3.8rem)] leading-[0.96] tracking-tight text-white mb-2">
                   <span>{project.titleLines.line1}</span>
                   <br />
-                  <span
-                    className="font-black bg-gradient-to-r from-[#00F0FF] via-[#818CF8] to-[#F97316] bg-clip-text text-transparent drop-shadow-[0_4px_25px_rgba(0,240,255,0.3)] inline-block"
-                  >
+                  <span className="font-black bg-gradient-to-r from-[#00F0FF] via-[#818CF8] to-[#F97316] bg-clip-text text-transparent drop-shadow-[0_4px_25px_rgba(0,240,255,0.3)] inline-block">
                     {project.titleLines.line2}
                   </span>
                   <br />
                   <span>{project.titleLines.line3}</span>
                 </h2>
 
-                {/* Signature Scribble / Flourish Underline (Exact from Mockup) */}
-                <div className="mb-4">
+                {/* Signature Scribble / Flourish Underline */}
+                <div className="mb-3">
                   <svg
                     className="w-20 h-4 text-[#00F0FF]/80"
                     viewBox="0 0 80 16"
@@ -574,19 +846,19 @@ export default function PhoneShowcase() {
                 </div>
 
                 {/* Description */}
-                <p className="font-[family-name:var(--font-inter)] text-xs sm:text-[13.5px] text-white/70 leading-relaxed max-w-sm mb-6">
+                <p className="font-[family-name:var(--font-inter)] text-xs sm:text-[13px] text-white/70 leading-relaxed max-w-sm mb-5">
                   {project.description}
                 </p>
 
-                {/* Action CTA Buttons (Exact Gradient + Ghost from Mockup) */}
-                <div className="flex flex-wrap items-center gap-3">
-                  {/* Primary: View Live Demo (Cyan-to-Rose Gradient) */}
+                {/* Action CTA Buttons */}
+                <div className="flex flex-wrap items-center gap-2.5">
+                  {/* Primary: View Live Demo / Case Study */}
                   <a
                     href={project.caseStudyUrl}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#00F0FF] via-[#06B6D4] to-[#F43F5E] text-[#060B12] font-[family-name:var(--font-syne)] font-bold text-xs sm:text-[13px] shadow-lg shadow-cyan-500/20 hover:scale-105 active:scale-95 transition-all duration-200"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#00F0FF] via-[#06B6D4] to-[#F43F5E] text-[#060B12] font-[family-name:var(--font-syne)] font-bold text-xs shadow-lg shadow-cyan-500/20 hover:scale-105 active:scale-95 transition-all duration-200"
                   >
                     <span>View Live Demo</span>
-                    <ArrowRight size={14} />
+                    <ArrowRight size={13} />
                   </a>
 
                   {/* Secondary: View GitHub */}
@@ -594,9 +866,9 @@ export default function PhoneShowcase() {
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#0C121A]/90 border border-white/15 text-white font-[family-name:var(--font-syne)] font-semibold text-xs sm:text-[13px] hover:border-white/30 hover:bg-[#141C26] active:scale-95 transition-all duration-200 backdrop-blur-xs"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#0C121A]/90 border border-white/15 text-white font-[family-name:var(--font-syne)] font-semibold text-xs hover:border-white/30 hover:bg-[#141C26] active:scale-95 transition-all duration-200 backdrop-blur-xs"
                   >
-                    <GithubIcon size={15} />
+                    <GithubIcon size={14} />
                     <span>View GitHub</span>
                   </a>
                 </div>
@@ -605,161 +877,70 @@ export default function PhoneShowcase() {
           </div>
 
           {/* ────────────────────────────────────────────────────────────
-              COLUMN 2 (CENTER): 3 OVERLAPPING ANGLED SMARTPHONES
-              Matches the exact 3D smartphone composition in the reference image:
-              - Left phone tilted left (-8.5deg), positioned higher
-              - Center phone dominant in front, standing upright (-0.5deg)
-              - Right phone tilted right (+8.5deg), positioned lower
+              COLUMN 2 (CENTER): 3 BIG, MODERN, COMPLETELY SEPARATED PHONES
+              - No overlap! Clear spacing (gap-4 sm:gap-6 lg:gap-7)
+              - 3D perspective with real-time mouse parallax
+              - Smooth 3-second screen updates with page-flip animation
+              - Interactive 3D flip card support on click
              ──────────────────────────────────────────────────────────── */}
-          <div className="lg:col-span-5 xl:col-span-5 flex items-center justify-center relative min-h-[390px] sm:min-h-[460px] lg:min-h-[500px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={project.id + '-mockups'}
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.45, ease: EASE }}
-                className="relative flex items-center justify-center w-full"
-                style={{
-                  transform: prefersReducedMotion
-                    ? undefined
-                    : `perspective(1200px) rotateY(${mouse.x * 4}deg) rotateX(${-mouse.y * 3}deg)`,
-                  transformStyle: 'preserve-3d',
-                }}
-              >
-                {/* ── LEFT PHONE: Reminders Screen (-8.5deg, Positioned Higher) ── */}
-                <div
-                  className="absolute left-1/2 -translate-x-[78%] -translate-y-4 sm:-translate-y-6 z-10 cursor-pointer transition-transform duration-300 hover:z-30 hover:scale-[1.03]"
-                  style={{
-                    transform: `rotate(-8.5deg)`,
-                  }}
-                >
-                  <div className="relative rounded-[32px] sm:rounded-[40px] p-1.5 sm:p-2 bg-gradient-to-b from-[#222E3B] via-[#141C26] to-[#0A0F15] border border-[#38BDF8]/40 shadow-2xl shadow-black/95 overflow-hidden">
-                    <div className="relative rounded-[26px] sm:rounded-[34px] overflow-hidden bg-black h-[clamp(280px,44vh,440px)] aspect-[9/19.5]">
-                      {/* Status Bar */}
-                      <div className="relative flex items-center justify-between px-3 pt-2 pb-0.5 z-20 bg-black/75 backdrop-blur-xs">
-                        <span className="font-[family-name:var(--font-jetbrains)] text-[7.5px] text-white/80 font-bold">9:41</span>
-                        <div className="w-12 h-2.5 rounded-full bg-black/90 shadow-inner" />
-                        <div className="w-2.5 h-1 rounded-xs border border-white/60" />
-                      </div>
+          <div
+            className="lg:col-span-7 xl:col-span-7 flex flex-col items-center justify-center relative min-h-[460px] sm:min-h-[520px] lg:min-h-[560px]"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            {/* 3D Phones Stage */}
+            <div
+              className="relative flex items-center justify-center gap-4 sm:gap-6 lg:gap-7 w-full overflow-x-auto sm:overflow-visible py-4 px-2 sm:px-0 no-scrollbar"
+              style={{
+                perspective: '1400px',
+                transformStyle: 'preserve-3d',
+              }}
+            >
+              {/* Phone 1: Left Screen (Tilted slightly right, separated) */}
+              <ModernPhone
+                screen={leftScreen}
+                isCenter={false}
+                isFlipped={flippedState[0]}
+                onFlip={() => toggleFlipSingle(0)}
+                tiltAngle={9}
+                prefersReducedMotion={prefersReducedMotion}
+                mouse={mouse}
+                phoneIndex={0}
+                projectTitle={project.title}
+              />
 
-                      {/* Screen Content */}
-                      <Image
-                        src={project.screens.left.file}
-                        alt={project.screens.left.label}
-                        fill
-                        priority
-                        sizes="(max-width: 640px) 170px, 250px"
-                        className="object-cover object-top"
-                      />
+              {/* Phone 2: Center Screen (Hero Spotlight, Elevated & Dominant) */}
+              <ModernPhone
+                screen={centerScreen}
+                isCenter={true}
+                isFlipped={flippedState[1]}
+                onFlip={() => toggleFlipSingle(1)}
+                tiltAngle={0}
+                prefersReducedMotion={prefersReducedMotion}
+                mouse={mouse}
+                phoneIndex={1}
+                projectTitle={project.title}
+              />
 
-                      {/* Glass Sheen */}
-                      <div
-                        className="absolute inset-0 pointer-events-none z-10"
-                        style={{
-                          background:
-                            'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 45%)',
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* ── CENTER PHONE: Dominant Home Dashboard (Taller, In Front, -0.5deg) ── */}
-                <div
-                  className="relative z-20 scale-105 sm:scale-110 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.98),0_0_50px_rgba(0,240,255,0.16)]"
-                  style={{
-                    transform: `rotate(-0.5deg)`,
-                  }}
-                >
-                  <div className="relative rounded-[36px] sm:rounded-[46px] p-2 sm:p-2.5 bg-gradient-to-b from-[#2A3B4D] via-[#162330] to-[#0B1118] border-[2px] border-[#38BDF8]/60 shadow-2xl overflow-hidden">
-                    <div className="relative rounded-[30px] sm:rounded-[40px] overflow-hidden bg-black h-[clamp(330px,52vh,510px)] aspect-[9/19.5]">
-                      
-                      {/* Dynamic Island Status Bar */}
-                      <div className="relative flex items-center justify-between px-4 pt-2.5 pb-0.5 z-20 bg-black/70 backdrop-blur-xs">
-                        <span className="font-[family-name:var(--font-jetbrains)] text-[8px] text-white/90 font-bold">9:41</span>
-                        <div className="w-14 h-3.5 rounded-full bg-black/95 shadow-inner" />
-                        <div className="flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF]" />
-                          <span className="w-2.5 h-1 rounded-xs border border-white/70" />
-                        </div>
-                      </div>
-
-                      {/* Screen Content: Home Dashboard */}
-                      <Image
-                        src={project.screens.center.file}
-                        alt={project.screens.center.label}
-                        fill
-                        priority
-                        sizes="(max-width: 640px) 250px, 340px"
-                        className="object-cover object-top"
-                      />
-
-                      {/* Bottom Home Indicator */}
-                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-24 h-1 rounded-full bg-white/40 z-20 pointer-events-none" />
-
-                      {/* Specular Glare */}
-                      <div
-                        className="absolute inset-0 pointer-events-none z-10"
-                        style={{
-                          background:
-                            'linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.02) 30%, transparent 60%)',
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* ── RIGHT PHONE: Analytics Screen (+8.5deg, Positioned Lower) ── */}
-                <div
-                  className="absolute left-1/2 translate-x-[18%] translate-y-6 sm:translate-y-8 z-10 cursor-pointer transition-transform duration-300 hover:z-30 hover:scale-[1.03]"
-                  style={{
-                    transform: `rotate(8.5deg)`,
-                  }}
-                >
-                  <div className="relative rounded-[32px] sm:rounded-[40px] p-1.5 sm:p-2 bg-gradient-to-b from-[#222E3B] via-[#141C26] to-[#0A0F15] border border-[#38BDF8]/40 shadow-2xl shadow-black/95 overflow-hidden">
-                    <div className="relative rounded-[26px] sm:rounded-[34px] overflow-hidden bg-black h-[clamp(280px,44vh,440px)] aspect-[9/19.5]">
-                      {/* Status Bar */}
-                      <div className="relative flex items-center justify-between px-3 pt-2 pb-0.5 z-20 bg-black/75 backdrop-blur-xs">
-                        <span className="font-[family-name:var(--font-jetbrains)] text-[7.5px] text-white/80 font-bold">9:41</span>
-                        <div className="w-12 h-2.5 rounded-full bg-black/90" />
-                        <div className="w-2.5 h-1 rounded-xs border border-white/60" />
-                      </div>
-
-                      {/* Screen Content: Analytics */}
-                      <Image
-                        src={project.screens.right.file}
-                        alt={project.screens.right.label}
-                        fill
-                        priority
-                        sizes="(max-width: 640px) 170px, 250px"
-                        className="object-cover object-top"
-                      />
-
-                      {/* Glass Sheen */}
-                      <div
-                        className="absolute inset-0 pointer-events-none z-10"
-                        style={{
-                          background:
-                            'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 45%)',
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-              </motion.div>
-            </AnimatePresence>
+              {/* Phone 3: Right Screen (Tilted slightly left, separated) */}
+              <ModernPhone
+                screen={rightScreen}
+                isCenter={false}
+                isFlipped={flippedState[2]}
+                onFlip={() => toggleFlipSingle(2)}
+                tiltAngle={-9}
+                prefersReducedMotion={prefersReducedMotion}
+                mouse={mouse}
+                phoneIndex={2}
+                projectTitle={project.title}
+              />
+            </div>
           </div>
 
           {/* ────────────────────────────────────────────────────────────
-              COLUMN 3 (RIGHT): 3 CONNECTED VERTICAL FEATURE CALLOUTS
-              Matches the exact vertical list with circular icons in reference:
-              - Cyan Ring: Track Daily Intake
-              - Orange Ring: Smart Reminders
-              - Cyan Ring: Visual Analytics
+              COLUMN 3 (RIGHT): CONNECTED FEATURE CALLOUTS & QUICK CONTROLS
              ──────────────────────────────────────────────────────────── */}
-          <div className="lg:col-span-3 xl:col-span-3 flex flex-col justify-center pl-0 lg:pl-4 xl:pl-6 z-20">
+          <div className="lg:col-span-2 xl:col-span-2 flex flex-col justify-center pl-0 lg:pl-2 z-20">
             <AnimatePresence mode="wait">
               <motion.div
                 key={project.id + '-right'}
@@ -769,25 +950,26 @@ export default function PhoneShowcase() {
                 transition={{ duration: 0.4, ease: EASE }}
                 className="flex flex-col"
               >
+                {/* 3 Connected Feature Nodes */}
                 {project.features.map((item, idx) => {
                   const Icon = item.icon;
                   const isLast = idx === project.features.length - 1;
                   return (
                     <div key={item.title} className="flex flex-col">
-                      <div className="flex items-center gap-3.5 group">
-                        {/* Circular Glowing Icon Container */}
+                      <div className="flex items-center gap-3 group">
+                        {/* Circular Glowing Icon Node */}
                         <div
-                          className={`w-11 h-11 sm:w-12 sm:h-12 shrink-0 rounded-full border ${item.iconBorder} ${item.iconBg} ${item.iconGlow} backdrop-blur-md flex items-center justify-center ${item.iconColor} group-hover:scale-105 transition-all duration-300`}
+                          className={`w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-full border ${item.iconBorder} ${item.iconBg} ${item.iconGlow} backdrop-blur-md flex items-center justify-center ${item.iconColor} group-hover:scale-105 transition-all duration-300`}
                         >
-                          <Icon size={19} />
+                          <Icon size={17} />
                         </div>
 
                         {/* Title & Short Subtitle */}
                         <div className="flex flex-col">
-                          <h3 className="font-[family-name:var(--font-syne)] font-bold text-xs sm:text-[13px] text-white">
+                          <h3 className="font-[family-name:var(--font-syne)] font-bold text-xs sm:text-[12.5px] text-white">
                             {item.title}
                           </h3>
-                          <p className="font-[family-name:var(--font-inter)] text-[11px] sm:text-xs text-white/50 leading-snug">
+                          <p className="font-[family-name:var(--font-inter)] text-[10.5px] sm:text-[11px] text-white/50 leading-snug">
                             {item.desc}
                           </p>
                         </div>
@@ -795,11 +977,36 @@ export default function PhoneShowcase() {
 
                       {/* Connecting Line (between icons) */}
                       {!isLast && (
-                        <div className="w-px h-6 sm:h-7 bg-gradient-to-b from-white/20 via-white/10 to-transparent ml-[21px] sm:ml-[23px] my-1" />
+                        <div className="w-px h-5 sm:h-6 bg-gradient-to-b from-white/20 via-white/10 to-transparent ml-[19px] sm:ml-[21px] my-1" />
                       )}
                     </div>
                   );
                 })}
+
+                {/* Quick 3D Interaction Control Pill */}
+                <div className="mt-6 pt-4 border-t border-white/10 flex flex-col gap-2">
+                  <button
+                    onClick={rotateScreens}
+                    className="inline-flex items-center justify-between px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-500/40 hover:bg-cyan-500/10 text-white/80 hover:text-white transition-all text-[11px] font-[family-name:var(--font-jetbrains)]"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <RefreshCw size={12} className="text-[#00F0FF]" />
+                      <span>Round Screens</span>
+                    </span>
+                    <span className="text-[10px] text-white/40">3s</span>
+                  </button>
+
+                  <button
+                    onClick={toggleFlipAll}
+                    className="inline-flex items-center justify-between px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-orange-500/40 hover:bg-orange-500/10 text-white/80 hover:text-white transition-all text-[11px] font-[family-name:var(--font-jetbrains)]"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <RotateCcw size={12} className="text-[#F97316]" />
+                      <span>Flip 3D Back</span>
+                    </span>
+                    <Sparkles size={11} className="text-[#F97316]" />
+                  </button>
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
@@ -807,16 +1014,15 @@ export default function PhoneShowcase() {
         </div>
 
         {/* ══════════════════════════════════════════════════════════════
-            BOTTOM STRIP: TECH STACK BADGES (LEFT) & KEY STATS (RIGHT)
+            BOTTOM STRIP: TECH STACK BADGES & KEY STATS
            ══════════════════════════════════════════════════════════════ */}
-        <div className="shrink-0 pt-3 sm:pt-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          
-          {/* Left: 4 Technology Badges (Flutter, Dart, SQLite, Local Notifications) */}
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 sm:gap-2.5">
+        <div className="shrink-0 pt-4 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-white/5">
+          {/* Left: Technology Badges */}
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
             {project.techStack.map((tech) => (
               <div
                 key={tech.name}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0D151E]/90 border border-white/10 text-xs font-[family-name:var(--font-jetbrains)] text-white/90 backdrop-blur-xs shadow-xs"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0D151E]/90 border border-white/10 text-[11.5px] font-[family-name:var(--font-jetbrains)] text-white/90 backdrop-blur-xs shadow-xs"
               >
                 {tech.type === 'flutter' && <FlutterIcon size={13} />}
                 {tech.type === 'dart' && <DartIcon size={13} />}
@@ -829,18 +1035,18 @@ export default function PhoneShowcase() {
             ))}
           </div>
 
-          {/* Right: 3 Key Metrics (3K+ Users, 95% Accuracy, 5★ Satisfaction) */}
+          {/* Right: Key Performance Metrics */}
           <div className="flex items-center justify-center gap-6 sm:gap-8">
             {project.stats.map((stat) => {
               const Icon = stat.icon;
               return (
                 <div key={stat.label} className="flex items-center gap-2.5">
-                  <Icon size={16} className="text-[#00F0FF] shrink-0" />
+                  <Icon size={15} className="text-[#00F0FF] shrink-0" />
                   <div className="flex flex-col">
-                    <span className="font-[family-name:var(--font-syne)] font-bold text-sm text-white leading-none">
+                    <span className="font-[family-name:var(--font-syne)] font-bold text-xs sm:text-sm text-white leading-none">
                       {stat.value}
                     </span>
-                    <span className="font-[family-name:var(--font-inter)] text-[11px] text-white/50 leading-tight mt-0.5">
+                    <span className="font-[family-name:var(--font-inter)] text-[10.5px] text-white/50 leading-tight mt-0.5">
                       {stat.label}
                     </span>
                   </div>
@@ -848,7 +1054,6 @@ export default function PhoneShowcase() {
               );
             })}
           </div>
-
         </div>
 
       </div>
